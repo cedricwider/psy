@@ -1,10 +1,10 @@
 import { mount } from '@vue/test-utils'
-import Home from 'components/Home.vue'
+import Home from 'Home.vue'
 
 describe('Home', () => {
   const wrapper = mount(Home)
 
   it('is mounted correctly', () => {
-    expect(wrapper.find('.home')).toBeDefined()
+    expect(wrapper.find('.home').exists()).toBe(true)
   })
 })
