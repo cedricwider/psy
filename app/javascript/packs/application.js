@@ -11,13 +11,12 @@ import Vue from 'vue'
 import App from '../app.vue'
 
 require('./style/main.scss')
-console.log('Hello World from Webpacker')
 
 document.addEventListener('DOMContentLoaded', () => {
-  const el = document.querySelector('#app');
+  const el = document.querySelector('#app')
   const app = new Vue({
     el,
     render: h => h(App),
-  });
-  console.log(app);
-});
+  })
+  console.log(app)
+})
