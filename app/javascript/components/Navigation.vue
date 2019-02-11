@@ -30,22 +30,30 @@
           Zeit Rapport
         </router-link>
 
-        <router-link to="/addresses" class="navbar-item" v-if="isLoggedIn">
+        <router-link to="/addresses" class="navbar-item psy-menu-item" v-if="isLoggedIn">
           Addressbuch
         </router-link>
 
-        <router-link to="/therapies" class="navbar-item" v-if="isLoggedIn">
+        <router-link to="/therapies" class="navbar-item psy-menu-item" v-if="isLoggedIn">
           Therapien
         </router-link>
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item" v-if="!isLoggedIn">
+        <div class="navbar-item psy-menu-item" v-if="!isLoggedIn">
           <div class="buttons">
             <router-link class="button is-primary" to="/register">
               <strong>Registrieren</strong>
             </router-link>
             <router-link class="button" to="/login">Login</router-link>
+          </div>
+        </div>
+
+        <div class="navbar-item" v-if="isLoggedIn">
+          <div class="buttons">
+            <button class="button" @click="logout">
+              <strong>Logout</strong>
+            </button>
           </div>
         </div>
       </div>
@@ -54,7 +62,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { sessions } from '../store/types'
 
 export default {
@@ -68,10 +76,11 @@ export default {
     ...mapGetters({ token: [sessions.token] }),
     isLoggedIn() {
       return this.token !== null
-    }
+    },
   },
 
   methods: {
+    ...mapActions({ logout: [sessions.signOut] }),
     burgerMenuClicked() {
       console.log('Burger Menu Clicked!')
       this.burgerExpanded = !this.burgerExpanded

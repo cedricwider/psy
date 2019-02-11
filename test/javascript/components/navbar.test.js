@@ -58,7 +58,7 @@ describe('Navigation', () => {
     })
 
     it('shows menu items', () => {
-      expect(wrapper.findAll('.psy-menu-item').length).toEqual(1)
+      expect(wrapper.findAll('.psy-menu-item').length).toEqual(2)
     })
   })
 })

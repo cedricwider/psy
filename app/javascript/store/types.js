@@ -1,8 +1,9 @@
 export const sessions = {
   signIn: 'session/signIn',
+  signOut: 'session/signOut',
   token: 'session/token',
   error: 'session/error',
-};
+}
 
 export const users = {
   create: 'user/create',
@@ -12,4 +13,4 @@ export const users = {
   index: 'user/index',
   show: 'user/show',
   update: 'user/update',
-};
+}
