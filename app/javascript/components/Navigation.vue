@@ -1,14 +1,14 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar psy-navigation" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/home">
-        <img src="/logo_transparent.png"/>
-      </router-link >
+        <img src="/logo_transparent.png" />
+      </router-link>
 
       <a
         role="button"
         class="navbar-burger burger"
-        :class="{'is-active': burgerExpanded}"
+        :class="{ 'is-active': burgerExpanded }"
         aria-label="menu"
         v-bind:aria-expanded="burgerExpanded"
         data-target="psyNavbar"
@@ -22,11 +22,11 @@
 
     <div ref="psyNavbar" id="psyNavbar" class="navbar-menu">
       <div class="navbar-start">
-        <router-link to="/home" class="navbar-item">
+        <router-link to="/home" class="navbar-item psy-menu-item">
           Home
         </router-link>
 
-        <router-link to="/timesheet" class="navbar-item" v-if="isLoggedIn">
+        <router-link to="/timesheet" class="navbar-item psy-menu-item" v-if="isLoggedIn">
           Zeit Rapport
         </router-link>
 
@@ -54,11 +54,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { sessions } from '../store/types'
+
 export default {
   data() {
     return {
       burgerExpanded: false,
-      isLoggedIn: false
+    }
+  },
+
+  computed: {
+    ...mapGetters({ token: [sessions.token] }),
+    isLoggedIn() {
+      return this.token !== null
     }
   },
 
@@ -67,8 +76,8 @@ export default {
       console.log('Burger Menu Clicked!')
       this.burgerExpanded = !this.burgerExpanded
       this.$refs.psyNavbar.classList.toggle('is-active')
-    }
-  }
+    },
+  },
 }
 </script>
 
