@@ -1,0 +1,32 @@
+@import './colors.scss';
+@import './fonts.scss';
+
+// ...update Bulma variables
+$family-primary: $normal-font;
+$family-secondary: $highlight-font;
+$family-sans-serif: $normal-font;
+$primary: $rosy-brown;
+$white: $almost-white;
+$black: $almost-black;
+$link: $dim-gray;
+
+html {
+  font-size: 24px;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  font-family: $normal-font;
+}
+
+.background-image {
+  // background-image: url('/background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@import '../../../../node_modules/bulma/bulma.sass';
