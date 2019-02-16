@@ -15,6 +15,8 @@
     "@vue/test-utils": "^1.0.0-beta.25",
     "babel-jest": "^23.6.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "eslint": "^5.13.0",
+    "eslint-plugin-vue": "^5.1.0",
     "jest": "^24.1.0",
     "jest-plugin-context": "^2.9.0",
     "jest-vue-preprocessor": "^1.4.0",
@@ -28,7 +30,11 @@
     "roots": [
       "test/javascript"
     ],
-    "moduleFileExtensions": ["js", "json", "vue"],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
     "moduleDirectories": [
       "node_modules",
       "app/javascript",
