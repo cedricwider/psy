@@ -38,19 +38,9 @@ const actions = {
     }),
 
   [sessions.signOut]: ({ commit, rootGetters }) =>
-    new Promise((resolve, reject) => {
-      rootGetters.httpClient
-        .post('/logout')
-        .then(response => {
-          commit(sessions.token, null)
-          resolve.response.data
-        })
-        .catch(error => {
-          const errorMessage = error.response.data ? error.response.data.message : 'Error while trying to logout'
-          console.log(errorMessage)
-          commit(sessions.error, errorMessage)
-          reject(error)
-        })
+    new Promise((resolve, _) => {
+      commit(sessions.token, null)
+      resolve()
     }),
 }
 

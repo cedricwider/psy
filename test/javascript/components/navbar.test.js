@@ -1,3 +1,4 @@
+import('babel-polyfill')
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -58,8 +59,10 @@ describe('Navigation', () => {
     it('logs out the user', () => {
       const logoutButton = wrapper.find('.psy-logout-button')
       logoutButton.trigger('click')
-      Vue.nextTick()
-      expect(wrapper.findAll('.psy-menu-item').length).toEqual(2)
+      Vue.nextTick().then(() => {
+        expect(wrapper.findAll('.psy-menu-item').length).toEqual(2)
+        done()
+      })
     })
   })
 
