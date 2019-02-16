@@ -1,4 +1,5 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
+import Vue from 'vue'
 import Vuex from 'vuex'
 import Router from 'vue-router'
 import navigation from 'Navigation.vue'
@@ -21,7 +22,11 @@ describe('Navigation', () => {
       }),
     }
 
-    actions = {}
+    actions = {
+      [sessions.signOut]: jest.fn(() => {
+        token = null
+      }),
+    }
 
     store = new Vuex.Store({
       state: {},
@@ -44,6 +49,17 @@ describe('Navigation', () => {
 
     it('shows menu items', () => {
       expect(wrapper.findAll('.psy-menu-item').length).toBeGreaterThan(1)
+    })
+
+    it('shows the logout button', () => {
+      expect(wrapper.findAll('.psy-logout-button').length).toEqual(1)
+    })
+
+    it('logs out the user', () => {
+      const logoutButton = wrapper.find('.psy-logout-button')
+      logoutButton.trigger('click')
+      Vue.nextTick()
+      expect(wrapper.findAll('.psy-menu-item').length).toEqual(2)
     })
   })
 

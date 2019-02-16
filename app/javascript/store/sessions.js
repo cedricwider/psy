@@ -2,17 +2,21 @@ import { sessions } from './types'
 
 const state = {
   error: null,
-  token: window.localStorage.getItem('psy-jwt-token'),
+  token: null,
 }
 
 const getters = {
-  [sessions.token]: state => state.token,
+  [sessions.token]: state => state.token || window.localStorage.getItem('psy-jwt-token'),
   [sessions.error]: state => state.error,
 }
 
 const mutations = {
-  [sessions.token]: (state, token) => window.localStorage.setItem('psy-jwt-token', token),
   [sessions.error]: (state, error) => (state.error = error),
+  [sessions.token]: (state, token) => {
+    state.token = token
+    if (token !== null) window.localStorage.setItem('psy-jwt-token', token)
+    else window.localStorage.removeItem('psy-jwt-token')
+  },
 }
 
 const actions = {
@@ -32,6 +36,7 @@ const actions = {
           reject(error)
         })
     }),
+
   [sessions.signOut]: ({ commit, rootGetters }) =>
     new Promise((resolve, reject) => {
       rootGetters.httpClient

@@ -51,7 +51,7 @@
 
         <div class="navbar-item" v-if="isLoggedIn">
           <div class="buttons">
-            <button class="button" @click="logout">
+            <button class="button psy-logout-button" @click="logout">
               <strong>Logout</strong>
             </button>
           </div>
@@ -73,14 +73,19 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ token: [sessions.token] }),
+    ...mapGetters({ token: sessions.token }),
     isLoggedIn() {
       return this.token !== null
     },
   },
 
   methods: {
-    ...mapActions({ logout: [sessions.signOut] }),
+    ...mapActions({ signOut: sessions.signOut }),
+
+    logout() {
+      this.signOut()
+    },
+
     burgerMenuClicked() {
       console.log('Burger Menu Clicked!')
       this.burgerExpanded = !this.burgerExpanded
