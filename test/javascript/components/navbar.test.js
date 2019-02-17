@@ -1,4 +1,3 @@
-import('babel-polyfill')
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vue from 'vue'
 import Vuex from 'vuex'
