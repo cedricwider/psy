@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Patient, type: :model do
   subject { described_class.new(patient_values) }
-  let(:patient_values) { attributes_for(:patient) }
+
+  let(:patient_values) { attributes_for(:patient).merge(user: user) }
+  let(:user) { create(:user) }
 
   describe 'Validations' do
     context 'With no missing values' do
@@ -37,6 +39,12 @@ RSpec.describe Patient, type: :model do
   end
 
   describe 'Relations' do
+    describe 'User' do
+      it 'belongs to a user' do
+        expect(subject.user).to be_present
+      end
+    end
+
     describe 'Address' do
       let(:patient) { create(:patient, :with_addresses) }
 
