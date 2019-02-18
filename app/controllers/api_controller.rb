@@ -28,4 +28,8 @@ class ApiController < ApplicationController
 
     response.set_header('X-Access-Token', token_for(current_user))
   end
+
+  def error(message:, errors: [])
+    { message: message, errors: errors }.to_json
+  end
 end

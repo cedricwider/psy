@@ -1,5 +1,6 @@
 Rails.application.configure do
-  config.x.hmac_key = ENV['HMAC_KEY']
+  config.x.hmac_key = '99722e7113d7c173874777446161ed672a64d1dfc1e380f310ab9fb42fb9af048fc0f16ad302433d811e97ac0179395fe04961ed53c172a83e3679150ec922b9'
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # The test environment is used exclusively to run your application's
