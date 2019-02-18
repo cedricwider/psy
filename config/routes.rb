@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :patients, only: [:index, :show, :create, :update, :destroy]
-    resources :addresses, only: [:index, :show, :create, :update, :destroy]
+    resources :addresses, only: [:show, :create, :update, :destroy]
   end
 
   get '*unmatched_route', to: 'home#index'
