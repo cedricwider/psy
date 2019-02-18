@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Patient, type: :model do
+  subject { described_class.new(patient_values) }
+  let(:patient_values) { attributes_for(:patient) }
+
   describe 'Validations' do
-    subject { described_class.new(patient_values) }
-
     context 'With no missing values' do
-      let(:patient_values) { attributes_for(:patient) }
-
       it 'is valid' do
         expect(subject).to be_valid
       end
@@ -33,6 +32,17 @@ RSpec.describe Patient, type: :model do
 
       it 'Validates presence of last_name' do
         expect(subject).not_to be_valid
+      end
+    end
+  end
+
+  describe 'Relations' do
+    describe 'Address' do
+      let(:patient) { create(:patient, :with_addresses) }
+
+      it 'has addresses' do
+        expect(patient.addresses).to be_present
+        expect(patient.addresses).not_to be_empty
       end
     end
   end
