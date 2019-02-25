@@ -14,3 +14,13 @@ export const users = {
   show: 'user/show',
   update: 'user/update',
 }
+
+export const patients = {
+  create: 'patient/create',
+  current: 'patient/current',
+  delete: 'patient/delete',
+  error: 'patient/error',
+  index: 'patient/index',
+  show: 'patient/show',
+  update: 'patient/update',
+}
