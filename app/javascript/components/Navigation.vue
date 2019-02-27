@@ -1,8 +1,15 @@
 <template>
-  <nav class="navbar psy-navigation" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar psy-navigation"
+    role="navigation"
+    aria-label="main navigation"
+  >
     <div class="navbar-brand">
-      <router-link class="navbar-item" to="/home">
-        <img src="/logo_transparent.png" />
+      <router-link
+        class="navbar-item"
+        to="/home"
+      >
+        <img src="/logo_transparent.png">
       </router-link>
 
       <a
@@ -10,48 +17,84 @@
         class="navbar-burger burger"
         :class="{ 'is-active': burgerExpanded }"
         aria-label="menu"
-        v-bind:aria-expanded="burgerExpanded"
+        :aria-expanded="burgerExpanded"
         data-target="psyNavbar"
         @click="burgerMenuClicked"
       >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
       </a>
     </div>
 
-    <div ref="psyNavbar" id="psyNavbar" class="navbar-menu">
+    <div
+      id="psyNavbar"
+      ref="psyNavbar"
+      class="navbar-menu"
+    >
       <div class="navbar-start">
-        <router-link to="/home" class="navbar-item psy-menu-item">
+        <router-link
+          to="/home"
+          class="navbar-item psy-menu-item"
+        >
           Home
         </router-link>
 
-        <router-link to="/timesheet" class="navbar-item psy-menu-item" v-if="isLoggedIn">
+        <router-link
+          v-if="isLoggedIn"
+          to="/timesheet"
+          class="navbar-item psy-menu-item"
+        >
           Zeit Rapport
         </router-link>
 
-        <router-link to="/addresses" class="navbar-item psy-menu-item" v-if="isLoggedIn">
+        <router-link
+          v-if="isLoggedIn"
+          to="/addresses"
+          class="navbar-item psy-menu-item"
+        >
           Addressbuch
         </router-link>
 
-        <router-link to="/therapies" class="navbar-item psy-menu-item" v-if="isLoggedIn">
+        <router-link
+          v-if="isLoggedIn"
+          to="/therapies"
+          class="navbar-item psy-menu-item"
+        >
           Therapien
         </router-link>
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item psy-menu-item" v-if="!isLoggedIn">
+        <div
+          v-if="!isLoggedIn"
+          class="navbar-item psy-menu-item"
+        >
           <div class="buttons">
-            <router-link class="button is-primary" to="/register">
+            <router-link
+              class="button is-primary"
+              to="/register"
+            >
               <strong>Registrieren</strong>
             </router-link>
-            <router-link class="button" to="/login">Login</router-link>
+            <router-link
+              class="button"
+              to="/login"
+            >
+              Login
+            </router-link>
           </div>
         </div>
 
-        <div class="navbar-item" v-if="isLoggedIn">
+        <div
+          v-if="isLoggedIn"
+          class="navbar-item"
+        >
           <div class="buttons">
-            <button class="button psy-logout-button" @click="logout">
+            <button
+              class="button psy-logout-button"
+              @click="logout"
+            >
               <strong>Logout</strong>
             </button>
           </div>
@@ -62,20 +105,20 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import { sessions } from '../store/types'
+import { mapGetters, mapActions } from 'vuex';
+import { sessions } from '../store/types';
 
 export default {
   data() {
     return {
       burgerExpanded: false,
-    }
+    };
   },
 
   computed: {
     ...mapGetters({ token: sessions.token }),
     isLoggedIn() {
-      return this.token !== null
+      return this.token !== null;
     },
   },
 
@@ -83,16 +126,16 @@ export default {
     ...mapActions({ signOut: sessions.signOut }),
 
     logout() {
-      this.signOut()
+      this.signOut();
     },
 
     burgerMenuClicked() {
-      console.log('Burger Menu Clicked!')
-      this.burgerExpanded = !this.burgerExpanded
-      this.$refs.psyNavbar.classList.toggle('is-active')
+      console.log('Burger Menu Clicked!');
+      this.burgerExpanded = !this.burgerExpanded;
+      this.$refs.psyNavbar.classList.toggle('is-active');
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped></style>

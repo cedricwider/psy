@@ -1,5 +1,8 @@
 module.exports = {
   root: true,
+  env: {
+    jest: true,
+  },
   extends: ['eslint:recommended', 'plugin:vue/recommended', 'airbnb-base'],
   rules: {
     'import/prefer-default-export': 'off',
