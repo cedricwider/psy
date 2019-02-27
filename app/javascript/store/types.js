@@ -3,7 +3,7 @@ export const sessions = {
   signOut: 'session/signOut',
   token: 'session/token',
   error: 'session/error',
-}
+};
 
 export const users = {
   create: 'user/create',
@@ -13,7 +13,7 @@ export const users = {
   index: 'user/index',
   show: 'user/show',
   update: 'user/update',
-}
+};
 
 export const patients = {
   create: 'patient/create',
@@ -23,4 +23,5 @@ export const patients = {
   index: 'patient/index',
   show: 'patient/show',
   update: 'patient/update',
-}
+  loading: 'patient/loading',
+};
