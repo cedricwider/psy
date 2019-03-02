@@ -1,39 +1,82 @@
 <template>
   <form-layout>
-    <error slot="error" :error="errorMessage"></error>
+    <error
+      slot="error"
+      :error="errorMessage"
+    />
     <div class="field">
       <div class="control">
-        <input type="text" name="first-name" v-model="user.firstName" class="input" placeholder="Vorname">
+        <input
+          v-model="user.firstName"
+          type="text"
+          name="first-name"
+          class="input"
+          placeholder="Vorname"
+        >
       </div>
     </div>
 
     <div class="field">
       <div class="control">
-        <input type="text" name="last-name" v-model="user.lastName" class="input" placeholder="Nachname">
+        <input
+          v-model="user.lastName"
+          type="text"
+          name="last-name"
+          class="input"
+          placeholder="Nachname"
+        >
       </div>
     </div>
 
     <div class="field">
       <div class="control">
-        <input type="email" name="email" v-model="user.email" class="input" placeholder="Email">
+        <input
+          v-model="user.email"
+          type="email"
+          name="email"
+          class="input"
+          placeholder="Email"
+        >
       </div>
     </div>
 
     <div class="field">
       <div class="control">
-        <input type="password" name="password" v-model="user.password" class="input" placeholder="Passwort">
+        <input
+          v-model="user.password"
+          type="password"
+          name="password"
+          class="input"
+          placeholder="Passwort"
+        >
       </div>
     </div>
 
     <div class="field">
       <div class="control">
-        <input type="password" name="password-confirmation" v-model="user.passwordConfirmation" class="input" placeholder="Passwort Wiederholen">
+        <input
+          v-model="user.passwordConfirmation"
+          type="password"
+          name="password-confirmation"
+          class="input"
+          placeholder="Passwort Wiederholen"
+        >
       </div>
     </div>
 
     <template slot="buttons">
-      <router-link class="button is-link is-outlined" to="/login">Login</router-link>
-      <button class='button is-primary' @click="register">Registrieren</button>
+      <router-link
+        class="button is-link is-outlined"
+        to="/login"
+      >
+        Login
+      </router-link>
+      <button
+        class="button is-primary"
+        @click="register"
+      >
+        Registrieren
+      </button>
     </template>
   </form-layout>
 </template>
@@ -92,5 +135,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
