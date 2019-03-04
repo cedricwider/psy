@@ -1,0 +1,67 @@
+<template>
+  <div class="sandbox">
+    <section class="loading">
+      <h2>CLoading (FullScreen)</h2>
+      <b-field>
+        <button
+          class="button is-primary"
+          @click="onFullScreenLoadingButtonClicked"
+        >
+          Toggle Loading
+        </button>
+      </b-field>
+      <c-loading :loading="fullScreenLoading">
+        <p>The loading indicator</p>
+      </c-loading>
+    </section>
+
+    <section class="loading">
+      <h2>CLoading (on Component)</h2>
+      <b-field>
+        <button
+          class="button is-primary"
+          @click="onComponentLoadingButtonClicked"
+        >
+          Toggle Loading
+        </button>
+      </b-field>
+      <c-loading
+        :loading="componentLoading"
+        :full-screen="false"
+      >
+        <p>The loading indicator</p>
+      </c-loading>
+    </section>
+  </div>
+</template>
+
+<script>
+import CLoading from './c_loading.vue';
+
+export default {
+  components: { 'c-loading': CLoading },
+  data() {
+    return {
+      fullScreenLoading: false,
+      componentLoading: false,
+    };
+  },
+  methods: {
+    onFullScreenLoadingButtonClicked() {
+      this.fullScreenLoading = true;
+      window.setTimeout(() => {
+        this.fullScreenLoading = false;
+      }, 5000);
+    },
+
+    onComponentLoadingButtonClicked() {
+      this.componentLoading = true;
+      window.setTimeout(() => {
+        this.componentLoading = false;
+      }, 15000);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>
