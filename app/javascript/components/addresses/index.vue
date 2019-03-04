@@ -42,8 +42,9 @@ export default {
   methods: {
     ...mapActions({ loadPatients: patients.index, setCurrentPatient: patients.current }),
     onRowSelected(patient) {
-      this.setCurrentPatient(patient);
-      this.$router.push({ name: 'addressshow', params: { id: patient.id } });
+      this.setCurrentPatient(patient).then(() => {
+        this.$router.push({ name: 'addressshow', params: { id: patient.id } });
+      });
     },
   },
 };

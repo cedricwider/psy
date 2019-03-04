@@ -13,6 +13,7 @@ import VeeValidate from 'vee-validate';
 import App from '../app.vue';
 import 'buefy/dist/buefy.css';
 import './style/main.scss';
+import 'babel-polyfill';
 
 Vue.use(Buefy);
 Vue.use(VeeValidate);

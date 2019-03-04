@@ -9,7 +9,7 @@ const patientState = {
 
 const getters = {
   [patients.error]: state => state.error,
-  [patients.current]: state => state.patient,
+  [patients.current]: state => state.current,
   [patients.loading]: state => state.loading,
   [patients.index]: state => state.index,
 };
@@ -47,9 +47,10 @@ export const mutations = {
 };
 
 export const actions = {
-  [patients.current]: ({ commit }, patient) => {
+  [patients.current]: ({ commit }, patient) => new Promise((resolve) => {
     commit(patients.current, patient);
-  },
+    resolve(patient);
+  }),
 
   [patients.create]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);

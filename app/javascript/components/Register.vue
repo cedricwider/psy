@@ -93,12 +93,6 @@ export default {
     error: Error,
   },
 
-  computed: {
-    ...mapGetters({
-      errorMessage: users.error,
-    }),
-  },
-
   data() {
     return {
       user: {
@@ -109,6 +103,12 @@ export default {
         passwordConfirmation: '',
       },
     };
+  },
+
+  computed: {
+    ...mapGetters({
+      errorMessage: users.error,
+    }),
   },
 
   methods: {
