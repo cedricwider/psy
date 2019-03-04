@@ -9,11 +9,13 @@
 
 import Vue from 'vue';
 import Buefy from 'buefy';
+import VeeValidate from 'vee-validate';
 import App from '../app.vue';
 import 'buefy/dist/buefy.css';
 import './style/main.scss';
 
 Vue.use(Buefy);
+Vue.use(VeeValidate);
 
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.querySelector('#app');
