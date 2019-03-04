@@ -88,7 +88,7 @@ describe('PatientStore', () => {
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .post('/patients')
+          .post('/api/patients')
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -114,7 +114,7 @@ describe('PatientStore', () => {
         beforeEach(() => {
           axios.defaults.baseURL = 'http://localhost/';
           nock('http://localhost/')
-            .get('/patients')
+            .get('/api/patients')
             .reply(200, patientsResponse);
           httpClient = axios;
           rootGetters = { httpClient };
@@ -138,7 +138,7 @@ describe('PatientStore', () => {
           axios.defaults.baseURL = 'http://localhost/';
 
           nock('http://localhost/')
-            .get('/patients')
+            .get('/api/patients')
             .reply(500, errorMessage);
 
           httpClient = axios;
@@ -170,7 +170,7 @@ describe('PatientStore', () => {
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .get('/patients/1')
+          .get('/api/patients/1')
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -195,7 +195,7 @@ describe('PatientStore', () => {
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .put('/patients/1', patient)
+          .put('/api/patients/1', patient)
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -220,7 +220,7 @@ describe('PatientStore', () => {
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .delete('/patients/1')
+          .delete('/api/patients/1')
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };

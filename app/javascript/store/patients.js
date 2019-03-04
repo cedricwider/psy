@@ -10,6 +10,8 @@ const patientState = {
 const getters = {
   [patients.error]: state => state.error,
   [patients.current]: state => state.patient,
+  [patients.loading]: state => state.loading,
+  [patients.index]: state => state.index,
 };
 
 export const mutations = {
@@ -48,7 +50,7 @@ export const actions = {
   [patients.create]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .post('/patients', {
+      .post('/api/patients', {
         first_name: patient.firstName,
         last_name: patient.lastName,
         email: patient.email,
@@ -70,7 +72,7 @@ export const actions = {
   [patients.index]: ({ commit, rootGetters }) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .get('/patients')
+      .get('/api/patients')
       .then((response) => {
         commit(patients.index, response.data);
         commit(patients.loading, false);
@@ -86,7 +88,7 @@ export const actions = {
   [patients.show]: ({ commit, rootGetters }, index) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .get(`/patients/${index}`)
+      .get(`/api/patients/${index}`)
       .then((response) => {
         commit(patients.update, response.data);
         commit(patients.loading, false);
@@ -102,7 +104,7 @@ export const actions = {
   [patients.update]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .put(`/patients/${patient.id}`, patient)
+      .put(`/api/patients/${patient.id}`, patient)
       .then((response) => {
         commit(patients.update, response.data);
         commit(patients.loading, false);
@@ -118,7 +120,7 @@ export const actions = {
   [patients.delete]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .delete(`/patients/${patient.id}`)
+      .delete(`/api/patients/${patient.id}`)
       .then((response) => {
         commit(patients.delete, response.data);
         commit(patients.loading, false);

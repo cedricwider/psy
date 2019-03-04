@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import sessions from './sessions';
 import users from './users';
+import patients from './patients';
 
 function setupTokenHandling(axs) {
   axs.interceptors.request.use((config) => {
@@ -71,5 +72,5 @@ export const store = new Vuex.Store({
   getters,
   mutations,
   actions,
-  modules: [sessions, users],
+  modules: [sessions, users, patients],
 });
