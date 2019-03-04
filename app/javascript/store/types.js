@@ -3,6 +3,7 @@ export const sessions = {
   signOut: 'session/signOut',
   token: 'session/token',
   error: 'session/error',
+  loading: 'session/loading',
 };
 
 export const users = {
