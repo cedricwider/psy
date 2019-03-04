@@ -1,7 +1,7 @@
 <template>
   <section class="patients-index">
     <section class="title">
-      <h1>Patienten</h1>
+      <h1>Addresbuch</h1>
     </section>
     <section class="table">
       <b-table
@@ -9,7 +9,8 @@
         :columns="columns"
         :loading="isLoading"
         striped
-        :hoverable="true"
+        hoverable
+        @click="onRowSelected"
       />
     </section>
   </section>
@@ -39,7 +40,11 @@ export default {
     this.loadPatients();
   },
   methods: {
-    ...mapActions({ loadPatients: patients.index }),
+    ...mapActions({ loadPatients: patients.index, setCurrentPatient: patients.current }),
+    onRowSelected(patient) {
+      this.setCurrentPatient(patient);
+      this.$router.push({ name: 'addressshow', params: { id: patient.id } });
+    },
   },
 };
 </script>

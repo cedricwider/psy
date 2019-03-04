@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from '@/../components/Home';
 import Login from '@/../components/Login';
 import Register from '@/../components/Register';
+import AddressContainer from '@/../components/addresses/container';
 import AddressIndex from '@/../components/addresses/index';
 import AddressNew from '@/../components/addresses/new';
 import AddressEdit from '@/../components/addresses/edit';
@@ -21,11 +22,12 @@ const router = new Router({
     {
       path: '/addresses',
       name: 'addresses',
-      component: AddressIndex,
+      component: AddressContainer,
       children: [
-        { path: '/new', name: 'addressnew', component: AddressNew },
-        { path: '/edit', name: 'addressedit', component: AddressEdit },
-        { path: '/show', name: 'addressshow', component: AddressShow },
+        { path: '/', name: 'addressnew', component: AddressIndex },
+        { path: 'new', name: 'addressnew', component: AddressNew },
+        { path: 'edit/:id', name: 'addressedit', component: AddressEdit },
+        { path: 'show/:id', name: 'addressshow', component: AddressShow },
       ],
     },
   ],

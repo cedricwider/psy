@@ -47,6 +47,10 @@ export const mutations = {
 };
 
 export const actions = {
+  [patients.current]: ({ commit }, patient) => {
+    commit(patients.current, patient);
+  },
+
   [patients.create]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
