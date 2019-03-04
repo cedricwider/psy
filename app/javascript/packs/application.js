@@ -7,16 +7,19 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import Vue from 'vue'
-import App from '../app.vue'
+import Vue from 'vue';
+import Buefy from 'buefy';
+import App from '../app.vue';
+import 'buefy/dist/buefy.css';
+import './style/main.scss';
 
-require('./style/main.scss')
+Vue.use(Buefy);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const el = document.querySelector('#app')
+  const el = document.querySelector('#app');
   const app = new Vue({
     el,
     render: h => h(App),
-  })
-  console.log(app)
-})
+  });
+  console.log(app);
+});
