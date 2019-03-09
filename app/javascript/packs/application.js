@@ -11,6 +11,7 @@ import Vue from 'vue';
 import Buefy from 'buefy';
 import VeeValidate from 'vee-validate';
 import App from '../app.vue';
+import 'vue-material-design-icons/styles.css';
 import 'buefy/dist/buefy.css';
 import './style/main.scss';
 import 'babel-polyfill';

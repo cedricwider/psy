@@ -1,34 +1,29 @@
 <template>
   <section class="patients-index">
     <section class="title">
-      <h1>Addresbuch</h1>
+      <h1 class="title is-1">
+        Addresbuch
+      </h1>
     </section>
-    <section class="table">
-      <b-table
-        :data="allPatients"
-        :columns="columns"
-        :loading="isLoading"
-        striped
-        hoverable
-        @click="onRowSelected"
-      />
-    </section>
+    <patients-table
+      :patients="allPatients"
+      @select="onRowSelected"
+    />
   </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { patients } from '../../store/types';
+import PatientsTable from './patients_table.vue';
 
 export default {
+  components: {
+    PatientsTable,
+  },
+
   data() {
-    return {
-      columns: [
-        { field: 'salutation', label: 'Anrede' },
-        { field: 'first_name', label: 'Vorname' },
-        { field: 'last_name', label: 'Nachname' },
-      ],
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
