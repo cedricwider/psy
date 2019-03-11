@@ -21,10 +21,9 @@ const router = new Router({
     { path: '/register', name: 'register', component: Register },
     {
       path: '/addresses',
-      name: 'addresses',
       component: AddressContainer,
       children: [
-        { path: '/', name: 'addressnew', component: AddressIndex },
+        { path: '/', name: 'addresses', component: AddressIndex },
         { path: 'new', name: 'addressnew', component: AddressNew },
         { path: 'edit/:id', name: 'addressedit', component: AddressEdit },
         { path: 'show/:id', name: 'addressshow', component: AddressShow },

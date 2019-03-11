@@ -7,11 +7,9 @@
       :loading="isLoading"
       striped
       hoverable
-      detailed
-      detail-key="id"
       @click="onRowClicked"
     >
-      <template slot-scope="props">
+      <template v-slot="props">
         <b-table-column
           field="id"
           label="ID"
@@ -38,26 +36,6 @@
           {{ props.row.last_name }}
         </b-table-column>
       </template>
-
-      <template
-        slot="detail"
-        slot-scope="props"
-      >
-        <div class="address-detail">
-          <div class="street address-part">
-            {{ mainAddress(props.row).street }}
-          </div>
-          <div class="house_number address-part">
-            {{ mainAddress(props.row).house_number }}
-          </div>
-          <div class="zip address-part">
-            {{ mainAddress(props.row).zip }}
-          </div>
-          <div class="city address-part">
-            {{ mainAddress(props.row).town }}
-          </div>
-        </div>
-      </template>
     </b-table>
   </section>
 </template>
@@ -79,12 +57,10 @@ export default {
     mainAddress(patient) {
       return patient.addresses.find(address => address.main_address) || patient.addresses[0];
     },
+
     onRowClicked(row) {
-      if (this.currentDetailRow) this.$refs.table.toggleDetails(this.currentDetailRow);
-      if (row !== this.currentDetailRow) {
-        this.currentDetailRow = row;
-        this.$refs.table.toggleDetails(row);
-      }
+      console.log('Row selected', row);
+      this.$emit('select', row);
     },
   },
 };
