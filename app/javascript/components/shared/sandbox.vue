@@ -32,18 +32,48 @@
         <p>The loading indicator</p>
       </c-loading>
     </section>
+
+    <section class="table">
+      <c-table
+        :column-names="table.columns"
+        :table-data="table.data"
+      >
+        <template #header>
+          <th>I Like</th>
+          <th>I Love</th>
+          <th>I hate</th>
+        </template>
+        <template v-slot:row="{ row, index }">
+          <tr>
+            <td>{{ index }}: {{ row.first }}</td>
+            <td>{{ row.second }}</td>
+            <td>{{ row.last }}</td>
+          </tr>
+        </template>
+      </c-table>
+    </section>
   </div>
 </template>
 
 <script>
 import CLoading from './c_loading.vue';
+import CTable from './c_table.vue';
 
 export default {
-  components: { 'c-loading': CLoading },
+  components: { CLoading, CTable },
   data() {
     return {
       fullScreenLoading: false,
       componentLoading: false,
+      table: {
+        columns: { first: 'First', second: 'Second', last: 'Last' },
+        data: [
+          { first: 'Banana', second: 'Apple', last: 'Orange' },
+          { first: 'Banana', second: 'Apple', last: 'Orange' },
+          { first: 'Banana', second: 'Apple', last: 'Orange' },
+          { first: 'Banana', second: 'Apple', last: 'Orange' },
+        ],
+      },
     };
   },
   methods: {
@@ -64,4 +94,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+section {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+</style>
