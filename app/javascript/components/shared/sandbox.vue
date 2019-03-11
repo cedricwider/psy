@@ -37,7 +37,20 @@
       <c-table
         :column-names="table.columns"
         :table-data="table.data"
-      />
+      >
+        <template #header>
+          <th>I Like</th>
+          <th>I Love</th>
+          <th>I hate</th>
+        </template>
+        <template v-slot:row="{ row, index }">
+          <tr>
+            <td>{{ index }}: {{ row.first }}</td>
+            <td>{{ row.second }}</td>
+            <td>{{ row.last }}</td>
+          </tr>
+        </template>
+      </c-table>
     </section>
   </div>
 </template>

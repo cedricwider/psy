@@ -2,29 +2,38 @@
   <table class="table c-table">
     <thead>
       <tr>
-        <th
-          v-for="(column, index) in columnNames"
-          :key="index"
-          class="c-table-head"
-        >
-          {{ column }}
-        </th>
+        <slot name="header">
+          <th
+            v-for="(column, index) in columnNames"
+            :key="index"
+            class="c-table-head"
+          >
+            {{ column }}
+          </th>
+        </slot>
       </tr>
     </thead>
     <tbody>
-      <tr
+      <slot
         v-for="(dataRow, index) in tableData"
-        :key="index"
+        name="row"
+        :index="index"
+        :row="dataRow"
         class="c-table-row"
       >
-        <td
-          v-for="(dataValue, jndex) in dataRowValues(dataRow)"
-          :key="jndex"
-          class="c-table-cell"
+        <tr
+          :key="index"
+          class="c-table-row"
         >
-          {{ dataValue }}
-        </td>
-      </tr>
+          <td
+            v-for="(dataValue, jndex) in dataRowValues(dataRow)"
+            :key="jndex"
+            class="c-table-cell"
+          >
+            {{ dataValue }}
+          </td>
+        </tr>
+      </slot>
     </tbody>
   </table>
 </template>
@@ -34,11 +43,13 @@ export default {
   props: {
     columnNames: {
       type: Object,
-      required: true,
+      required: false,
+      default: () => {},
     },
     tableData: {
       type: Array,
-      required: true,
+      required: false,
+      default: () => [],
     },
   },
   computed: {
