@@ -81,7 +81,19 @@ describe('PatientStore', () => {
 
   describe('Actions', () => {
     describe('Create Patient', () => {
-      const patient = { id: 1, firts_name: 'jes', last_name: 'test' };
+      const patient = {
+        id: 1,
+        salutation: 'Dr.',
+        firts_name: 'Jes',
+        last_name: 'Test',
+        address: {
+          street: 'JestStreet',
+          houseNumber: '42',
+          zip: '1337',
+          town: 'JestTown',
+          country: 'Testistan',
+        },
+      };
       let httpClient;
       let rootGetters;
 
