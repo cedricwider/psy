@@ -91,7 +91,6 @@ export const actions = {
     rootGetters.httpClient
       .get(`/api/patients/${index}`)
       .then((response) => {
-        console.log('Response Data: ', response.data);
         commit(patients.update, responseToPatient(response.data));
         commit(patients.loading, false);
         resolve(response.data);

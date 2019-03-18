@@ -98,11 +98,28 @@
           placeholder="Schweiz"
         />
       </b-field>
+      <template slot="buttons">
+        <button
+          class="button is-outlined"
+          @click="onCancelButtonClicked"
+        >
+          Abbrechen
+        </button>
+        <button
+          class="button is-primary"
+          type="submit"
+          @click="onSaveButtonClicked"
+        >
+          Speichern
+        </button>
+      </template>
     </form-layout>
   </section>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+import { patients } from '../../store/types.js';
 import FormContainer from '../shared/FormContainer.vue';
 
 export default {
@@ -122,6 +139,45 @@ export default {
       town: null,
       country: 'Schweiz',
     };
+  },
+  computed: {
+    ...mapGetters({ currentPatient: patients.current }),
+    patient() {
+      return {
+        salutation: this.salutation,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        address: {
+          street: this.street,
+          houseNumber: this.houseNumber,
+          zip: this.zip,
+          town: this.town,
+          country: this.country,
+        },
+      };
+    },
+  },
+  methods: {
+    ...mapActions({
+      setCurrentPatient: patients.current,
+      createPatient: patients.create,
+    }),
+    onSaveButtonClicked() {
+      this.createPatient(this.patient)
+        .then(pat => this.$router.push({ name: 'addressshow', params: { id: pat.id } }))
+        .catch(error => (this.errorMessage = error.message));
+    },
+    onCancelButtonClicked() {
+      this.errorMessage = null;
+      this.salutation = null;
+      this.firstName = null;
+      this.lastName = null;
+      this.street = null;
+      this.houseNumber = null;
+      this.zip = null;
+      this.town = null;
+      this.country = 'Schweiz';
+    },
   },
 };
 </script>
