@@ -13,6 +13,16 @@ export const patientToRequest = patient => ({
     },
   ],
 });
-export const responseToPatient = (response) => {
-  /* TODO: Implement as soon as needed */
-};
+export const responseToPatient = response => ({
+  id: response.id,
+  salutation: response.salutation,
+  firstName: response.first_name,
+  lastName: response.last_name,
+  address: {
+    street: response.addresses[0].street,
+    houseNumber: response.addresses[0].house_number,
+    zip: response.addresses[0].zip,
+    town: response.addresses[0].town,
+    country: response.addresses[0].country,
+  },
+});

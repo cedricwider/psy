@@ -27,13 +27,13 @@
           field="first_name"
           label="Vorname"
         >
-          {{ props.row.first_name }}
+          {{ props.row.firstName }}
         </b-table-column>
         <b-table-column
           field="last_name"
           label="Nachname"
         >
-          {{ props.row.last_name }}
+          {{ props.row.lastName }}
         </b-table-column>
       </template>
     </b-table>

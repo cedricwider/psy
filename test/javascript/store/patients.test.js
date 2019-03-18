@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import nock from 'nock';
 import { mutations, actions } from 'store/patients';
 import { patients } from 'store/types';
-import { patientToRequest } from 'helpers/formatters';
+import { patientToRequest, responseToPatient } from 'helpers/formatters';
 
 describe('PatientStore', () => {
   describe('Mutations', () => {
@@ -119,7 +119,23 @@ describe('PatientStore', () => {
     });
 
     describe('Load all patients', () => {
-      const patientsResponse = [{ id: 1, firts_name: 'jes', last_name: 'test' }];
+      const patientsResponse = [
+        {
+          id: 1,
+          salutation: 'Dr.',
+          first_name: 'jes',
+          last_name: 'test',
+          addresses: [
+            {
+              street: 'JestStreet',
+              house_number: '42',
+              zip: '1337',
+              town: 'JestTown',
+              country: 'Testistan',
+            },
+          ],
+        },
+      ];
       let httpClient;
       let rootGetters;
 
@@ -139,7 +155,8 @@ describe('PatientStore', () => {
 
           await loadPatients({ commit, rootGetters });
           expect(commit.calledWith(patients.loading, true)).toBe(true);
-          expect(commit.calledWith(patients.index, patientsResponse)).toBe(true);
+          const patientsArray = patientsResponse.map(pat => responseToPatient(pat));
+          expect(commit.calledWith(patients.index, patientsArray)).toBe(true);
           expect(commit.calledWith(patients.loading, false)).toBe(true);
         });
       });
@@ -180,13 +197,15 @@ describe('PatientStore', () => {
         id: 1,
         firts_name: 'jes',
         last_name: 'test',
-        address: {
-          street: 'JestStreet',
-          houseNumber: '42',
-          zip: '1337',
-          town: 'JestTown',
-          country: 'Testistan',
-        },
+        addresses: [
+          {
+            street: 'JestStreet',
+            house_number: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        ],
       };
       let httpClient;
       let rootGetters;
@@ -206,7 +225,7 @@ describe('PatientStore', () => {
 
         await getPatient({ commit, rootGetters }, 1);
         expect(commit.calledWith(patients.loading, true)).toBe(true);
-        expect(commit.calledWith(patients.update, patient)).toBe(true);
+        expect(commit.calledWith(patients.update, responseToPatient(patient))).toBe(true);
         expect(commit.calledWith(patients.loading, false)).toBe(true);
       });
     });

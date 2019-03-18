@@ -32,11 +32,11 @@ export default {
     },
     fullName() {
       if (!this.patient) return '';
-      return `${this.patient.first_name} ${this.patient.last_name}`;
+      return `${this.patient.firstName} ${this.patient.lastName}`;
     },
     address() {
       if (!this.patient) return null;
-      return this.patient.addresses[0];
+      return this.patient.address;
     },
   },
 

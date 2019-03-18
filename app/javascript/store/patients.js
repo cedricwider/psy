@@ -1,5 +1,5 @@
 import { patients } from './types';
-import { patientToRequest } from '../helpers/formatters';
+import { patientToRequest, responseToPatient } from '../helpers/formatters';
 
 const patientState = {
   error: null,
@@ -74,7 +74,8 @@ export const actions = {
     rootGetters.httpClient
       .get('/api/patients')
       .then((response) => {
-        commit(patients.index, response.data);
+        const patientsResponse = response.data.map(pat => responseToPatient(pat));
+        commit(patients.index, patientsResponse);
         commit(patients.loading, false);
         resolve(response.data);
       })
@@ -90,7 +91,8 @@ export const actions = {
     rootGetters.httpClient
       .get(`/api/patients/${index}`)
       .then((response) => {
-        commit(patients.update, response.data);
+        console.log('Response Data: ', response.data);
+        commit(patients.update, responseToPatient(response.data));
         commit(patients.loading, false);
         resolve(response.data);
       })
