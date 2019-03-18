@@ -29,13 +29,13 @@ RSpec.describe Api::PatientsController, type: :controller do
     let(:patient_params) { attributes_for(:patient) }
 
     it 'returns http success' do
-      post :create, params: { patient: patient_params }, format: :json
+      post :create, params:   patient_params, format: :json
 
       expect(response).to have_http_status(:success)
     end
 
     it 'Creates a new patient' do
-      expect { post :create, params: { patient: patient_params }, format: :json }
+      expect { post :create, params: patient_params, format: :json }
         .to change { user.patients.count }
         .by(1)
     end
@@ -47,7 +47,7 @@ RSpec.describe Api::PatientsController, type: :controller do
       end
 
       it 'Adds another address' do
-        expect { post :create, params: { patient: patient_params }, format: :json }
+        expect { post :create, params: patient_params, format: :json }
           .to change { Address.count }
           .by(1)
       end
@@ -61,13 +61,13 @@ RSpec.describe Api::PatientsController, type: :controller do
       end
 
       it 'Returns unsuccessful status code' do
-        post :create, params: { patient: patient_params }, format: :json
+        post :create, params: patient_params, format: :json
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'Returns an error message' do
-        post :create, params: { patient: patient_params }, format: :json
+        post :create, params: patient_params, format: :json
         json = JSON.parse(response.body)
 
         expect(json.dig('errors', 'first_name')).to be_present
@@ -76,17 +76,17 @@ RSpec.describe Api::PatientsController, type: :controller do
   end
 
   describe 'PUT #update' do
-    let(:patient_params) { attributes_for(:patient) }
     let(:patient) { user.patients.first }
+    let(:patient_params) { attributes_for(:patient).merge(id: patient.id) }
 
     it 'returns http success' do
-      put :update, params: { id: patient.id, patient: patient_params }, format: :json
+      put :update, params: patient_params, format: :json
 
       expect(response).to have_http_status(:success)
     end
 
     it 'Updates the patient' do
-      expect { put :update, params: { id: patient.id, patient: patient_params }, format: :json }.to change { patient.reload.first_name }
+      expect { put :update, params: patient_params, format: :json }.to(change { patient.reload.first_name })
     end
   end
 
