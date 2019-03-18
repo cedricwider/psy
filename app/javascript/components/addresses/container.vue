@@ -1,6 +1,8 @@
 <template>
   <section class="addresses">
-    <router-view />
+    <div class="container">
+      <router-view />
+    </div>
   </section>
 </template>
 
