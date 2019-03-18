@@ -1,4 +1,5 @@
 import { patients } from './types';
+import { patientToRequest } from '../helpers/formatters';
 
 const patientState = {
   error: null,
@@ -55,13 +56,7 @@ export const actions = {
   [patients.create]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .post('/api/patients', {
-        first_name: patient.firstName,
-        last_name: patient.lastName,
-        email: patient.email,
-        password: patient.password,
-        password_confirmation: patient.passwordConfirmation,
-      })
+      .post('/api/patients', patientToRequest(patient))
       .then((response) => {
         commit(patients.create, response.data);
         commit(patients.loading, false);
@@ -109,7 +104,7 @@ export const actions = {
   [patients.update]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .put(`/api/patients/${patient.id}`, patient)
+      .put(`/api/patients/${patient.id}`, patientToRequest(patient))
       .then((response) => {
         commit(patients.update, response.data);
         commit(patients.loading, false);

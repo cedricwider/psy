@@ -4,6 +4,7 @@ import sinon from 'sinon';
 import nock from 'nock';
 import { mutations, actions } from 'store/patients';
 import { patients } from 'store/types';
+import { patientToRequest } from 'helpers/formatters';
 
 describe('PatientStore', () => {
   describe('Mutations', () => {
@@ -175,7 +176,18 @@ describe('PatientStore', () => {
     });
 
     describe('Loading a single patient by id', () => {
-      const patient = { id: 1, firts_name: 'jes', last_name: 'test' };
+      const patient = {
+        id: 1,
+        firts_name: 'jes',
+        last_name: 'test',
+        address: {
+          street: 'JestStreet',
+          houseNumber: '42',
+          zip: '1337',
+          town: 'JestTown',
+          country: 'Testistan',
+        },
+      };
       let httpClient;
       let rootGetters;
 
@@ -200,14 +212,26 @@ describe('PatientStore', () => {
     });
 
     describe('Update a patient', () => {
-      const patient = { id: 1, firts_name: 'Rudi', last_name: 'Spec' };
+      const patient = {
+        id: 1,
+        salutation: 'Dr.',
+        firstName: 'Rudi',
+        lastName: 'Spec',
+        address: {
+          street: 'JestStreet',
+          houseNumber: '42',
+          zip: '1337',
+          town: 'JestTown',
+          country: 'Testistan',
+        },
+      };
       let httpClient;
       let rootGetters;
 
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .put('/api/patients/1', patient)
+          .put('/api/patients/1', patientToRequest(patient))
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
