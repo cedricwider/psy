@@ -4,11 +4,7 @@
       <h1>{{ fullName }}</h1>
     </section>
     <section class="address">
-      <c-address
-        v-for="address in patient.addresses"
-        :key="address.id"
-        :href="address.href"
-      />
+      <c-address :address="patient.address" />
     </section>
   </section>
 </template>
@@ -30,7 +26,7 @@ export default {
 
   computed: {
     fullName() {
-      return `${this.patient.first_name} ${this.patient.last_name}`;
+      return `${this.patient.firstName} ${this.patient.lastName}`;
     },
   },
 };

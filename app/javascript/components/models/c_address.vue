@@ -9,26 +9,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { addresses } from '../../store/types';
-
 export default {
   props: {
-    href: { type: String, required: true },
-  },
-
-  data() {
-    return {
-      address: null,
-    };
-  },
-
-  created() {
-    this.fetchAddress(this.href).then(address => (this.address = address));
-  },
-
-  methods: {
-    ...mapActions({ fetchAddress: addresses.load }),
+    address: {
+      type: Object,
+      required: true,
+    },
   },
 };
 </script>

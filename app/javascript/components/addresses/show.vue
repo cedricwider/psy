@@ -40,7 +40,7 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
     if (!this.patient) {
       this.loadCurrentPatient();
     }
