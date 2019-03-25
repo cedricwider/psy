@@ -8,12 +8,12 @@ export const patientMixin = {
     };
   },
   methods: {
-    ...mapActions({ createPatient: patients.create }),
+    ...mapActions({ storePatient: patients.save }),
     savePatient() {
-      this.createPatient(this.patient)
+      this.storePatient(this.patient)
         .then((pat) => {
-          this.$router.push({ name: 'addressshow', params: { id: pat.id } });
           this.clearForm();
+          this.$router.push({ name: 'addressshow', params: { id: pat.id } });
         })
         .catch(error => (this.errorMessage = error.message));
     },

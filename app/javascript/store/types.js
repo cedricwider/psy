@@ -36,5 +36,6 @@ export const addresses = {
   load: 'address/load',
   loading: 'address/loading',
   show: 'address/show',
+  save: 'address/save',
   update: 'address/update',
 };

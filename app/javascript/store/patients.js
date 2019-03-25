@@ -91,9 +91,10 @@ export const actions = {
     rootGetters.httpClient
       .get(`/api/patients/${index}`)
       .then((response) => {
-        commit(patients.update, responseToPatient(response.data));
+        const patient = responseToPatient(response.data);
+        commit(patients.update, patient);
         commit(patients.loading, false);
-        resolve(response.data);
+        resolve(patient);
       })
       .catch((error) => {
         commit(patients.error, error.response.data);
@@ -101,6 +102,10 @@ export const actions = {
         reject(error);
       });
   }),
+  [patients.save]: ({ dispatch }, patient) => {
+    const saveOperation = patient.id ? patients.update : patients.create;
+    return dispatch(saveOperation, patient);
+  },
 
   [patients.update]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);

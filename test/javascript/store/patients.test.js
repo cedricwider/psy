@@ -267,6 +267,57 @@ describe('PatientStore', () => {
       });
     });
 
+    describe('Save a patient', () => {
+      describe('Save an existting patient', () => {
+        const patient = {
+          id: 1,
+          salutation: 'Dr.',
+          firstName: 'Rudi',
+          lastName: 'Spec',
+          address: {
+            street: 'JestStreet',
+            houseNumber: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        };
+
+        it('calls the update action', () => {
+          const dispatch = sinon.spy();
+          const savePatient = actions[patients.save];
+
+          savePatient({ dispatch }, patient);
+
+          expect(dispatch.calledWith(patients.update, patient)).toBeTruthy();
+        });
+      });
+
+      describe('Save a new patient', () => {
+        const patient = {
+          salutation: 'Dr.',
+          firstName: 'Rudi',
+          lastName: 'Spec',
+          address: {
+            street: 'JestStreet',
+            houseNumber: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        };
+
+        it('calls the create action', () => {
+          const dispatch = sinon.spy();
+          const savePatient = actions[patients.save];
+
+          savePatient({ dispatch }, patient);
+
+          expect(dispatch.calledWith(patients.create, patient)).toBeTruthy();
+        });
+      });
+    });
+
     describe('Delete a patient', () => {
       const patient = { id: 1, firts_name: 'Rudi', last_name: 'Spec' };
       let httpClient;
