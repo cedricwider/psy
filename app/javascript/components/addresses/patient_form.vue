@@ -4,6 +4,7 @@
       <error
         slot="error"
         :message="errorMessage"
+        :error="error"
       />
 
       <!-- Salutation and Name -->
@@ -137,6 +138,11 @@ export default {
       type: String,
       required: false,
       default: '',
+    },
+    error: {
+      type: Object,
+      required: false,
+      default: null,
     },
   },
   data() {
