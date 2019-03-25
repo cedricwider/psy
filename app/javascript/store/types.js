@@ -22,7 +22,20 @@ export const patients = {
   delete: 'patient/delete',
   error: 'patient/error',
   index: 'patient/index',
+  loading: 'patient/loading',
   show: 'patient/show',
   update: 'patient/update',
-  loading: 'patient/loading',
+};
+
+export const addresses = {
+  create: 'address/create',
+  current: 'address/current',
+  delete: 'address/delete',
+  error: 'address/error',
+  index: 'address/index',
+  load: 'address/load',
+  loading: 'address/loading',
+  show: 'address/show',
+  save: 'address/save',
+  update: 'address/update',
 };

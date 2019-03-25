@@ -8881,6 +8881,11 @@ vue-loader@14.2.2:
     vue-style-loader "^4.0.1"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-material-design-icons@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/vue-material-design-icons/-/vue-material-design-icons-3.1.0.tgz#1c24752f4a43c40cad08c391d66e6fbd8ffaf2af"
+  integrity sha512-2u+LRzsEKn4SmT35wCmmV0taqd90R1IWtZbHtwx6SUem2qma8SwWYAalr/pjOjATlSiWIQeka4DYYc3lch1Fvw==
+
 vue-property-decorator@6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-6.0.0.tgz#bb651b293542e31db0d24f36f4b0250ef08d8515"

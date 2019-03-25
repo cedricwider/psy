@@ -1,4 +1,5 @@
 import { patients } from './types';
+import { patientToRequest, responseToPatient } from '../helpers/formatters';
 
 const patientState = {
   error: null,
@@ -9,7 +10,9 @@ const patientState = {
 
 const getters = {
   [patients.error]: state => state.error,
-  [patients.current]: state => state.patient,
+  [patients.current]: state => state.current,
+  [patients.loading]: state => state.loading,
+  [patients.index]: state => state.index,
 };
 
 export const mutations = {
@@ -45,16 +48,15 @@ export const mutations = {
 };
 
 export const actions = {
+  [patients.current]: ({ commit }, patient) => new Promise((resolve) => {
+    commit(patients.current, patient);
+    resolve(patient);
+  }),
+
   [patients.create]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .post('/patients', {
-        first_name: patient.firstName,
-        last_name: patient.lastName,
-        email: patient.email,
-        password: patient.password,
-        password_confirmation: patient.passwordConfirmation,
-      })
+      .post('/api/patients', patientToRequest(patient))
       .then((response) => {
         commit(patients.create, response.data);
         commit(patients.loading, false);
@@ -70,9 +72,10 @@ export const actions = {
   [patients.index]: ({ commit, rootGetters }) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .get('/patients')
+      .get('/api/patients')
       .then((response) => {
-        commit(patients.index, response.data);
+        const patientsResponse = response.data.map(pat => responseToPatient(pat));
+        commit(patients.index, patientsResponse);
         commit(patients.loading, false);
         resolve(response.data);
       })
@@ -86,11 +89,12 @@ export const actions = {
   [patients.show]: ({ commit, rootGetters }, index) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .get(`/patients/${index}`)
+      .get(`/api/patients/${index}`)
       .then((response) => {
-        commit(patients.update, response.data);
+        const patient = responseToPatient(response.data);
+        commit(patients.update, patient);
         commit(patients.loading, false);
-        resolve(response.data);
+        resolve(patient);
       })
       .catch((error) => {
         commit(patients.error, error.response.data);
@@ -98,11 +102,15 @@ export const actions = {
         reject(error);
       });
   }),
+  [patients.save]: ({ dispatch }, patient) => {
+    const saveOperation = patient.id ? patients.update : patients.create;
+    return dispatch(saveOperation, patient);
+  },
 
   [patients.update]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .put(`/patients/${patient.id}`, patient)
+      .put(`/api/patients/${patient.id}`, patientToRequest(patient))
       .then((response) => {
         commit(patients.update, response.data);
         commit(patients.loading, false);
@@ -118,7 +126,7 @@ export const actions = {
   [patients.delete]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .delete(`/patients/${patient.id}`)
+      .delete(`/api/patients/${patient.id}`)
       .then((response) => {
         commit(patients.delete, response.data);
         commit(patients.loading, false);

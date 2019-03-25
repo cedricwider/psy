@@ -37,14 +37,13 @@ class Api::PatientsController < ApiController
 
   def patient_params
     params
-      .require(:patient)
       .tap { |p| p[:addresses_attributes] = p[:addresses] }
       .permit(
         :first_name,
         :last_name,
         :salutation,
         :sex,
-        addresses_attributes: [ADDRESS_PARAMS]
+        addresses_attributes: ADDRESS_PARAMS
       )
   end
 end

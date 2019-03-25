@@ -4,6 +4,7 @@ import sinon from 'sinon';
 import nock from 'nock';
 import { mutations, actions } from 'store/patients';
 import { patients } from 'store/types';
+import { patientToRequest, responseToPatient } from 'helpers/formatters';
 
 describe('PatientStore', () => {
   describe('Mutations', () => {
@@ -81,14 +82,26 @@ describe('PatientStore', () => {
 
   describe('Actions', () => {
     describe('Create Patient', () => {
-      const patient = { id: 1, firts_name: 'jes', last_name: 'test' };
+      const patient = {
+        id: 1,
+        salutation: 'Dr.',
+        firts_name: 'Jes',
+        last_name: 'Test',
+        address: {
+          street: 'JestStreet',
+          houseNumber: '42',
+          zip: '1337',
+          town: 'JestTown',
+          country: 'Testistan',
+        },
+      };
       let httpClient;
       let rootGetters;
 
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .post('/patients')
+          .post('/api/patients')
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -106,7 +119,23 @@ describe('PatientStore', () => {
     });
 
     describe('Load all patients', () => {
-      const patientsResponse = [{ id: 1, firts_name: 'jes', last_name: 'test' }];
+      const patientsResponse = [
+        {
+          id: 1,
+          salutation: 'Dr.',
+          first_name: 'jes',
+          last_name: 'test',
+          addresses: [
+            {
+              street: 'JestStreet',
+              house_number: '42',
+              zip: '1337',
+              town: 'JestTown',
+              country: 'Testistan',
+            },
+          ],
+        },
+      ];
       let httpClient;
       let rootGetters;
 
@@ -114,7 +143,7 @@ describe('PatientStore', () => {
         beforeEach(() => {
           axios.defaults.baseURL = 'http://localhost/';
           nock('http://localhost/')
-            .get('/patients')
+            .get('/api/patients')
             .reply(200, patientsResponse);
           httpClient = axios;
           rootGetters = { httpClient };
@@ -126,7 +155,8 @@ describe('PatientStore', () => {
 
           await loadPatients({ commit, rootGetters });
           expect(commit.calledWith(patients.loading, true)).toBe(true);
-          expect(commit.calledWith(patients.index, patientsResponse)).toBe(true);
+          const patientsArray = patientsResponse.map(pat => responseToPatient(pat));
+          expect(commit.calledWith(patients.index, patientsArray)).toBe(true);
           expect(commit.calledWith(patients.loading, false)).toBe(true);
         });
       });
@@ -138,7 +168,7 @@ describe('PatientStore', () => {
           axios.defaults.baseURL = 'http://localhost/';
 
           nock('http://localhost/')
-            .get('/patients')
+            .get('/api/patients')
             .reply(500, errorMessage);
 
           httpClient = axios;
@@ -163,14 +193,27 @@ describe('PatientStore', () => {
     });
 
     describe('Loading a single patient by id', () => {
-      const patient = { id: 1, firts_name: 'jes', last_name: 'test' };
+      const patient = {
+        id: 1,
+        firts_name: 'jes',
+        last_name: 'test',
+        addresses: [
+          {
+            street: 'JestStreet',
+            house_number: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        ],
+      };
       let httpClient;
       let rootGetters;
 
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .get('/patients/1')
+          .get('/api/patients/1')
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -182,20 +225,32 @@ describe('PatientStore', () => {
 
         await getPatient({ commit, rootGetters }, 1);
         expect(commit.calledWith(patients.loading, true)).toBe(true);
-        expect(commit.calledWith(patients.update, patient)).toBe(true);
+        expect(commit.calledWith(patients.update, responseToPatient(patient))).toBe(true);
         expect(commit.calledWith(patients.loading, false)).toBe(true);
       });
     });
 
     describe('Update a patient', () => {
-      const patient = { id: 1, firts_name: 'Rudi', last_name: 'Spec' };
+      const patient = {
+        id: 1,
+        salutation: 'Dr.',
+        firstName: 'Rudi',
+        lastName: 'Spec',
+        address: {
+          street: 'JestStreet',
+          houseNumber: '42',
+          zip: '1337',
+          town: 'JestTown',
+          country: 'Testistan',
+        },
+      };
       let httpClient;
       let rootGetters;
 
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .put('/patients/1', patient)
+          .put('/api/patients/1', patientToRequest(patient))
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -212,6 +267,57 @@ describe('PatientStore', () => {
       });
     });
 
+    describe('Save a patient', () => {
+      describe('Save an existting patient', () => {
+        const patient = {
+          id: 1,
+          salutation: 'Dr.',
+          firstName: 'Rudi',
+          lastName: 'Spec',
+          address: {
+            street: 'JestStreet',
+            houseNumber: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        };
+
+        it('calls the update action', () => {
+          const dispatch = sinon.spy();
+          const savePatient = actions[patients.save];
+
+          savePatient({ dispatch }, patient);
+
+          expect(dispatch.calledWith(patients.update, patient)).toBeTruthy();
+        });
+      });
+
+      describe('Save a new patient', () => {
+        const patient = {
+          salutation: 'Dr.',
+          firstName: 'Rudi',
+          lastName: 'Spec',
+          address: {
+            street: 'JestStreet',
+            houseNumber: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        };
+
+        it('calls the create action', () => {
+          const dispatch = sinon.spy();
+          const savePatient = actions[patients.save];
+
+          savePatient({ dispatch }, patient);
+
+          expect(dispatch.calledWith(patients.create, patient)).toBeTruthy();
+        });
+      });
+    });
+
     describe('Delete a patient', () => {
       const patient = { id: 1, firts_name: 'Rudi', last_name: 'Spec' };
       let httpClient;
@@ -220,7 +326,7 @@ describe('PatientStore', () => {
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .delete('/patients/1')
+          .delete('/api/patients/1')
           .reply(200, patient);
         httpClient = axios;
         rootGetters = { httpClient };
