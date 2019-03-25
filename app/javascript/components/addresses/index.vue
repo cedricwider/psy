@@ -4,6 +4,12 @@
       <h1 class="title is-1">
         Addresbuch
       </h1>
+      <router-link
+        class="button is-button is-secondary"
+        :to="{ name: 'addressnew' }"
+      >
+        Addresse erfassen
+      </router-link>
     </section>
     <patients-table
       :patients="allPatients"
@@ -45,4 +51,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped />
+<style lang="scss" scoped>
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+</style>

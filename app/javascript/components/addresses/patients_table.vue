@@ -2,7 +2,6 @@
   <section class="patient-table">
     <b-table
       ref="table"
-      :show-detail-icon="true"
       :data="patients"
       :loading="isLoading"
       striped
@@ -16,7 +15,8 @@
           width="40"
         >
           {{ props.row.id }}
-        </b-table-column><b-table-column
+        </b-table-column>
+        <b-table-column
           field="salutation"
           label="Anrede"
           width="60"
@@ -34,6 +34,17 @@
           label="Nachname"
         >
           {{ props.row.lastName }}
+        </b-table-column>
+        <b-table-column
+          label="Bearbeiten"
+          width="20"
+        >
+          <router-link :to="{ name: 'addressedit', params: { id: props.row.id } }">
+            <b-icon
+              icon="account-edit"
+              pack="mdi"
+            />
+          </router-link>
         </b-table-column>
       </template>
     </b-table>

@@ -4,7 +4,7 @@
       :patient="patient"
       :error-message="errorMessage"
       @save="savePatient"
-      @cancel="clearForm"
+      @cancel="onCancelClicked"
     />
   </section>
 </template>

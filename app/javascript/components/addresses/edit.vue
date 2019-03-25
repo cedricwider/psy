@@ -6,7 +6,7 @@
         :error-message="errorMessage"
         :error="serverError"
         @save="savePatient"
-        @cancel="showPatient"
+        @cancel="onCancelClicked"
       />
     </c-loading>
   </section>
@@ -47,9 +47,6 @@ export default {
   },
   methods: {
     ...mapActions({ loadPatient: patients.show, setCurrentPatient: patients.current }),
-    showPatient() {
-      this.$router.push({ name: 'addressshow', params: { id: this.patient.id } });
-    },
   },
 };
 </script>

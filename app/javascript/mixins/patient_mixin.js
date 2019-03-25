@@ -20,5 +20,9 @@ export const patientMixin = {
     clearForm() {
       this.patient = { address: {} };
     },
+    onCancelClicked() {
+      this.clearForm();
+      this.$router.go(-1);
+    },
   },
 };
