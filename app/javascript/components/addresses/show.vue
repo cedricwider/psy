@@ -26,16 +26,16 @@ export default {
     CLoading,
     CPatient,
   },
-
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   computed: {
     ...mapGetters({
       patient: patients.current,
       patientLoading: patients.loading,
-      addressLoading: addresses.loading,
     }),
-    isLoading() {
-      return this.patientLoading || this.addressLoading;
-    },
     fullName() {
       if (!this.patient) return '';
       return `${this.patient.firstName} ${this.patient.lastName}`;
@@ -46,10 +46,8 @@ export default {
     },
   },
 
-  created() {
-    if (!this.patient) {
-      this.loadCurrentPatient();
-    }
+  mounted() {
+    this.loadCurrentPatient();
   },
   methods: {
     ...mapActions({
@@ -59,8 +57,10 @@ export default {
     }),
     loadCurrentPatient() {
       const patientId = this.$route.params.id;
+      this.isLoading = true;
       return this.fetchPatient(patientId).then((patient) => {
         this.setCurrentPatient(patient);
+        this.isLoading = false;
       });
     },
   },

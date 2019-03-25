@@ -23,6 +23,7 @@ export const patients = {
   error: 'patient/error',
   index: 'patient/index',
   loading: 'patient/loading',
+  save: 'patient/save',
   show: 'patient/show',
   update: 'patient/update',
 };
