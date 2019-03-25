@@ -6,8 +6,13 @@ import PatientForm from 'addresses/patient_form.vue';
 Vue.config.ignoredElements = ['b-input', 'b-field', 'b-select'];
 
 describe('PatientForm', () => {
-  const patient = {};
-  const wrapper = mount(PatientForm, { propsData: { patient } });
+  const patient = { address: {} };
+  let propsData = { patient };
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = mount(PatientForm, { propsData });
+  });
 
   it('is mounted correctly', () => {
     expect(wrapper.find('.patient-form').exists()).toBe(true);
@@ -30,6 +35,18 @@ describe('PatientForm', () => {
         await Vue.nextTick();
         expect(wrapper.emitted().save).toBeTruthy();
       });
+    });
+  });
+
+  describe('Displaying the errorMessage', () => {
+    const errorMessage = 'The error message';
+    beforeEach(() => {
+      propsData = { patient, errorMessage };
+      wrapper = mount(PatientForm, { propsData });
+    });
+
+    it('Shows an error message', () => {
+      expect(wrapper.find('.error').exists()).toBeTruthy();
     });
   });
 });

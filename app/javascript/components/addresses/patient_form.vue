@@ -3,7 +3,7 @@
     <form-layout>
       <error
         slot="error"
-        :error="errorMessage"
+        :message="errorMessage"
       />
 
       <!-- Salutation and Name -->
@@ -27,7 +27,7 @@
           expanded
         >
           <b-input
-            v-model="firstName"
+            v-model="patient.firstName"
             type="text"
             placeholder="Hans"
           />
@@ -37,7 +37,7 @@
           expanded
         >
           <b-input
-            v-model="lastName"
+            v-model="patient.lastName"
             type="text"
             placeholder="Muster"
           />
@@ -54,14 +54,14 @@
           expanded
         >
           <b-input
-            v-model="street"
+            v-model="patient.address.street"
             type="text"
             placeholder="Mustergasse"
           />
         </b-field>
         <b-field label="Nr.">
           <b-input
-            v-model="houseNumber"
+            v-model="patient.address.houseNumber"
             type="text"
             placeholder="11"
           />
@@ -75,7 +75,7 @@
       >
         <b-field label="PLZ">
           <b-input
-            v-model="zip"
+            v-model="patient.address.zip"
             type="text"
             placeholder="8108"
           />
@@ -85,7 +85,7 @@
           expanded
         >
           <b-input
-            v-model="town"
+            v-model="patient.address.town"
             type="text"
             placeholder="Musterswil"
           />
@@ -93,7 +93,7 @@
       </b-field>
       <b-field label="Land">
         <b-input
-          v-model="country"
+          v-model="patient.address.country"
           type="text"
           placeholder="Schweiz"
         />
@@ -133,6 +133,16 @@ export default {
       type: Object,
       required: true,
     },
+    errorMessage: {
+      type: String,
+      required: false,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      salutations: ['Frau', 'Herr', 'Dr.', 'Prof.', 'Prof. Dr.'],
+    };
   },
   methods: {
     onCancelButtonClicked() {
