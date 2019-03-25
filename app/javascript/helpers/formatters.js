@@ -13,16 +13,19 @@ export const patientToRequest = patient => ({
     },
   ],
 });
-export const responseToPatient = response => ({
-  id: response.id,
-  salutation: response.salutation,
-  firstName: response.first_name,
-  lastName: response.last_name,
-  address: {
-    street: response.addresses[0].street,
-    houseNumber: response.addresses[0].house_number,
-    zip: response.addresses[0].zip,
-    town: response.addresses[0].town,
-    country: response.addresses[0].country,
-  },
-});
+export const responseToPatient = (response) => {
+  const serverAddress = response.addresses[0] || {};
+  return {
+    id: response.id,
+    salutation: response.salutation,
+    firstName: response.first_name,
+    lastName: response.last_name,
+    address: {
+      street: serverAddress.street,
+      houseNumber: serverAddress.house_number,
+      zip: serverAddress.zip,
+      town: serverAddress.town,
+      country: serverAddress.country,
+    },
+  };
+};
