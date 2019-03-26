@@ -36,6 +36,12 @@
           {{ props.row.lastName }}
         </b-table-column>
         <b-table-column
+          field="phone"
+          label="Telefon"
+        >
+          {{ props.row.phone }}
+        </b-table-column>
+        <b-table-column
           label="Bearbeiten"
           width="20"
         >
