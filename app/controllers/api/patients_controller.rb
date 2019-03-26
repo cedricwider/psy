@@ -43,6 +43,7 @@ class Api::PatientsController < ApiController
         :last_name,
         :salutation,
         :sex,
+        :phone,
         addresses_attributes: ADDRESS_PARAMS
       )
   end

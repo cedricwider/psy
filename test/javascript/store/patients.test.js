@@ -87,6 +87,7 @@ describe('PatientStore', () => {
         salutation: 'Dr.',
         firts_name: 'Jes',
         last_name: 'Test',
+        phone: '0791234567',
         address: {
           street: 'JestStreet',
           houseNumber: '42',
@@ -236,6 +237,7 @@ describe('PatientStore', () => {
         salutation: 'Dr.',
         firstName: 'Rudi',
         lastName: 'Spec',
+        phone: '0791234567',
         address: {
           street: 'JestStreet',
           houseNumber: '42',

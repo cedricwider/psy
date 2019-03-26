@@ -3,6 +3,7 @@ export const patientToRequest = patient => ({
   salutation: patient.salutation,
   first_name: patient.firstName,
   last_name: patient.lastName,
+  phone: patient.phone,
   addresses: [
     {
       street: patient.address.street,
@@ -20,6 +21,7 @@ export const responseToPatient = (response) => {
     salutation: response.salutation,
     firstName: response.first_name,
     lastName: response.last_name,
+    phone: response.phone,
     address: {
       street: serverAddress.street,
       houseNumber: serverAddress.house_number,

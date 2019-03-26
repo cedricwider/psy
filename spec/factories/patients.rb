@@ -4,6 +4,7 @@ FactoryBot.define do
     last_name { FFaker::Name.last_name }
     salutation { FFaker::Name.prefix }
     sex { 'female' }
+    phone { FFaker::PhoneNumberCH.phone_number }
 
     association :user, factory: :user
 
