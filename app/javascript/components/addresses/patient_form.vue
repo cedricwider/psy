@@ -43,6 +43,16 @@
             placeholder="Muster"
           />
         </b-field>
+        <b-field
+          label="Telefon"
+          expanded
+        >
+          <b-input
+            v-model="patient.phone"
+            type="text"
+            placeholder="079 123 45 67"
+          />
+        </b-field>
       </b-field>
 
       <!-- Street and house number -->
