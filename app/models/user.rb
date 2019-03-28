@@ -8,5 +8,6 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  has_many :patients
+  has_many :patients, dependent: :destroy
+  has_many :therapies, dependent: :destroy
 end

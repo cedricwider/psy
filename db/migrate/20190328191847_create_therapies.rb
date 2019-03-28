@@ -5,5 +5,7 @@ class CreateTherapies < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+
+    add_reference :therapies, :user, foreign_key: true
   end
 end
