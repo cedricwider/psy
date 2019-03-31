@@ -53,5 +53,14 @@ RSpec.describe Patient, type: :model do
         expect(patient.addresses).not_to be_empty
       end
     end
+
+    describe 'Therapies' do
+      let(:therapy) { create(:therapy) }
+      let(:patient) { create(:patient, therapies: [therapy]) }
+
+      it 'holds on to its therapies' do
+        expect(patient.therapies.first).to eq therapy
+      end
+    end
   end
 end

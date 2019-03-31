@@ -13,5 +13,11 @@ FactoryBot.define do
         create_list :address, 3, patient: patient
       end
     end
+
+    trait :with_therapies do
+      after :create do |patient|
+        create_list :therapy, 3, patients: [patient]
+      end
+    end
   end
 end
