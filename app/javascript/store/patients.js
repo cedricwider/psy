@@ -53,14 +53,13 @@ export const actions = {
     resolve(patient);
   }),
 
-  [patients.find]: ({ getters, dispatch }, id) => new Promise((resolve) => {
-    const patient = getters[patients.index]().find(p => p.id === id);
+  [patients.find]: ({ getters, dispatch }, id) => {
+    const patient = getters[patients.index].find(p => p.id === id);
     if (patient) {
-      resolve(patient);
-    } else {
-      resolve(dispatch(patients.show, id));
+      return Promise.resolve(patient);
     }
-  }),
+    return dispatch(patients.show, id);
+  },
 
   [patients.create]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
