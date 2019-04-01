@@ -28,6 +28,18 @@ export const patients = {
   update: 'patient/update',
 };
 
+export const therapies = {
+  create: 'therapy/create',
+  current: 'therapy/current',
+  delete: 'therapy/delete',
+  error: 'therapy/error',
+  index: 'therapy/index',
+  loading: 'therapy/loading',
+  save: 'therapy/save',
+  show: 'therapy/show',
+  update: 'therapy/update',
+};
+
 export const addresses = {
   create: 'address/create',
   current: 'address/current',
