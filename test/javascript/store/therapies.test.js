@@ -23,42 +23,43 @@ describe('TherapyStore', () => {
       expect(state.error).toEqual(error);
     });
 
-    it('Adds a therapies to the collection', () => {
+    it('Adds a therapy to the collection', () => {
       const mutateAddTherapy = mutations[therapies.create];
-      const therapy = { name: 'Rudy Spec' };
-      const state = { index: [] };
+      const therapy = { id: 1, name: 'Rudy Spec' };
+      const state = { index: {} };
       mutateAddTherapy(state, therapy);
-      expect(state.index.length).toBe(1);
+      expect(state.index[1]).toEqual(therapy);
     });
 
-    describe('Adding a single therapy to the collection', () => {
+    describe('Updating a single therapy to the collection', () => {
       describe('When the therapy is not yet known', () => {
         it('Adds the therapy to the collection', () => {
           const therapy = { id: 1, title: 'jes', patients: [{ id: 1, href: 'http://test.com' }] };
-          const state = { index: [] };
+          const state = { index: {} };
           const updateTherapy = mutations[therapies.update];
 
           updateTherapy(state, therapy);
-          expect(state.index.length).toBe(1);
+          expect(state.index[1]).toEqual(therapy);
         });
       });
       describe('When the therapy already exists', () => {
         it('Updates the existing therapy in the collection', () => {
           const therapy = { id: 1, title: 'jes', patients: [{ id: 1, href: 'http://test.com' }] };
-          const state = { index: [therapy] };
+          const state = { index: { 1: { title: 'outdated title' } } };
           const updateTherapy = mutations[therapies.update];
 
           updateTherapy(state, therapy);
-          expect(state.index.length).toBe(1);
+          expect(state.index[1]).toEqual(therapy);
         });
       });
     });
 
     it('Sets Therapies', () => {
       const mutateTherapies = mutations[therapies.index];
-      const index = [{ id: 1, title: 'Rudy Spec' }];
+      const therapy = { id: 1, title: 'Rudy Spec' };
+      const index = { 1: therapy };
       const state = { index: null };
-      mutateTherapies(state, index);
+      mutateTherapies(state, [therapy]);
       expect(state.index).toEqual(index);
     });
 
@@ -71,11 +72,11 @@ describe('TherapyStore', () => {
 
     it('Deletes a therapy', () => {
       const therapy = { id: 1, title: 'jes', patients: [{ id: 1, href: 'http://test.com' }] };
-      const state = { index: [therapy] };
+      const state = { index: { 1: therapy } };
       const deleteTherapy = mutations[therapies.delete];
 
       deleteTherapy(state, therapy);
-      expect(state.index.length).toBe(0);
+      expect(state.index[1]).toBe(undefined);
     });
   });
 
@@ -132,10 +133,12 @@ describe('TherapyStore', () => {
 
         it('Loads all therapies', async () => {
           const commit = sinon.spy();
+          const dispatch = sinon.spy();
           const loadTherapies = actions[therapies.index];
 
-          await loadTherapies({ commit, rootGetters });
+          await loadTherapies({ commit, dispatch, rootGetters });
           expect(commit.calledWith(therapies.loading, true)).toBe(true);
+          expect(dispatch.calledWith(patients.show, 1));
           expect(commit.calledWith(therapies.index, therapiesResponse)).toBe(true);
           expect(commit.calledWith(therapies.loading, false)).toBe(true);
         });

@@ -8,6 +8,11 @@ import AddressIndex from '@/../components/addresses/index';
 import AddressNew from '@/../components/addresses/new';
 import AddressEdit from '@/../components/addresses/edit';
 import AddressShow from '@/../components/addresses/show';
+import TherapyContainer from '@/../components/therapies/container';
+import TherapyIndex from '@/../components/therapies/index';
+import TherapyNew from '@/../components/therapies/new';
+import TherapyEdit from '@/../components/therapies/edit';
+import TherapyShow from '@/../components/therapies/show';
 
 Vue.use(Router);
 
@@ -28,6 +33,16 @@ const router = new Router({
         { path: 'new', name: 'addressnew', component: AddressNew },
         { path: 'edit/:id', name: 'addressedit', component: AddressEdit },
         { path: 'show/:id', name: 'addressshow', component: AddressShow },
+      ],
+    },
+    {
+      path: '/therapies',
+      component: TherapyContainer,
+      children: [
+        { path: '/', name: 'therapies', component: TherapyIndex },
+        { path: 'new', name: 'therapynew', component: TherapyNew },
+        { path: 'edit/:id', name: 'therapyedit', component: TherapyEdit },
+        { path: 'show/:id', name: 'therapyshow', component: TherapyShow },
       ],
     },
   ],

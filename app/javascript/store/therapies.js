@@ -1,9 +1,9 @@
-import { therapies } from './types';
+import { patients, therapies } from './types';
 
 const therapyState = {
   error: null,
   current: null,
-  index: [],
+  index: {},
   loading: false,
 };
 
@@ -21,28 +21,24 @@ export const mutations = {
   [therapies.current]: (state, therapy) => {
     state.current = therapy;
   },
-  [therapies.index]: (state, index) => {
-    state.index = index;
+  [therapies.index]: (state, therapies) => {
+    if (!state.index) state.index = {};
+    therapies.forEach(therapy => (state.index[therapy.id] = therapy));
   },
   [therapies.loading]: (state, isLoading) => {
     state.loading = isLoading;
   },
   [therapies.create]: (state, therapy) => {
-    state.index.push(therapy);
+    if (!state.index) state.index = {};
+    state.index[therapy.id] = therapy;
   },
   [therapies.update]: (state, therapy) => {
-    const foundTherapy = state.index.find(pat => pat.id === therapy.id);
-    if (foundTherapy) {
-      state.index[state.index.indexOf(foundTherapy)] = therapy;
-    } else {
-      state.index.push(therapy);
-    }
+    if (!state.index) state.index = {};
+    state.index[therapy.id] = therapy;
   },
   [therapies.delete]: (state, therapy) => {
-    const foundTherapy = state.index.find(pat => pat.id === therapy.id);
-    if (foundTherapy) {
-      state.index.splice(state.index.indexOf(foundTherapy), 1);
-    }
+    if (!state.index) state.index = {};
+    delete state.index[therapy.id];
   },
 };
 
@@ -72,16 +68,28 @@ export const actions = {
     commit(therapies.loading, true);
     rootGetters.httpClient
       .get('/api/therapies')
-      .then((response) => {
-        const therapies = response.data;
-        therapies.forEach((therapy) => {
-          const promises = therapy.patients.map(patient => dispatch(patient.show, patient.id));
+      .then(async (response) => {
+        // TODO: Factor-out this huge junk of code... (14j)
+        // Maybe a helper would be nice since we don't want to
+        // pollute the whole actions-namespace with private functions
+        const therapiesResponse = response.data;
+        const patientPromises = therapiesResponse
+          .map(therapy => therapy.patients)
+          .flat()
+          .map(patientRef => dispatch(patients.show, patientRef.id));
+        const patientResponses = await Promise.all(patientPromises);
+        patientResponses.forEach((patientResponse) => {
+          // TODO: One patient can be in multiple therapies...! <-- there's currently a BUG
+          const therapy = therapiesResponse.find(t => t.patients.map(p => p.id).includes(patientResponse.id));
+          const patientIndex = therapy.patients.findIndex(p => p.id === patientResponse.id);
+          therapy.patients[patientIndex] = patientResponse;
         });
-        commit(therapies.index, response.data);
+        commit(therapies.index, therapiesResponse);
         commit(therapies.loading, false);
-        resolve(response.data);
+        resolve(therapiesResponse);
       })
       .catch((error) => {
+        console.error('Error while loading therapies: ', error);
         commit(therapies.error, error.response.data);
         commit(therapies.loading, false);
         reject(error);
