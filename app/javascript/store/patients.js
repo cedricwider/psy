@@ -53,6 +53,15 @@ export const actions = {
     resolve(patient);
   }),
 
+  [patients.find]: ({ getters, dispatch }, id) => new Promise((resolve) => {
+    const patient = getters[patients.index]().find(p => p.id === id);
+    if (patient) {
+      resolve(patient);
+    } else {
+      resolve(dispatch(patients.show, id));
+    }
+  }),
+
   [patients.create]: ({ commit, rootGetters }, patient) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
@@ -86,10 +95,10 @@ export const actions = {
       });
   }),
 
-  [patients.show]: ({ commit, rootGetters }, index) => new Promise((resolve, reject) => {
+  [patients.show]: ({ commit, rootGetters }, patientId) => new Promise((resolve, reject) => {
     commit(patients.loading, true);
     rootGetters.httpClient
-      .get(`/api/patients/${index}`)
+      .get(`/api/patients/${patientId}`)
       .then((response) => {
         const patient = responseToPatient(response.data);
         commit(patients.update, patient);

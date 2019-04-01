@@ -21,6 +21,7 @@ export const patients = {
   current: 'patient/current',
   delete: 'patient/delete',
   error: 'patient/error',
+  find: 'patient/find',
   index: 'patient/index',
   loading: 'patient/loading',
   save: 'patient/save',

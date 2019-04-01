@@ -119,6 +119,63 @@ describe('PatientStore', () => {
       });
     });
 
+    describe('Find Patient', () => {
+      describe('When the patient has already been loaded', () => {
+        const patient = {
+          id: 1,
+          salutation: 'Dr.',
+          firts_name: 'Jes',
+          last_name: 'Test',
+          phone: '0791234567',
+          address: {
+            street: 'JestStreet',
+            houseNumber: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        };
+
+        it('Returns the patient', async () => {
+          const getters = { [patients.index]: () => [patient] };
+          const dispatch = sinon.spy();
+          const findPatient = actions[patients.find];
+
+          const fetchedPatient = await findPatient({ getters, dispatch }, 1);
+          expect(fetchedPatient).toEqual(patient);
+          expect(dispatch.calledWith(patients.show, patient.id)).toBe(false);
+        });
+      });
+
+      describe('When the patient is not loaded yet', () => {
+        it('Loads the patient', async () => {
+          const patientId = 1;
+          const patient = {
+            id: patientId,
+            salutation: 'Dr.',
+            firts_name: 'Jes',
+            last_name: 'Test',
+            phone: '0791234567',
+            address: {
+              street: 'JestStreet',
+              houseNumber: '42',
+              zip: '1337',
+              town: 'JestTown',
+              country: 'Testistan',
+            },
+          };
+          const getters = { [patients.index]: () => [] };
+          const dispatch = sinon.stub();
+          dispatch.returns(new Promise(resolve => resolve(patient)));
+          const findPatient = actions[patients.find];
+
+          const fetchedPatient = await findPatient({ getters, dispatch }, patientId);
+          expect(fetchedPatient).toEqual(patient);
+          expect(dispatch.calledWith(patients.show, patientId)).toBe(true);
+        });
+      });
+    });
+
     describe('Load all patients', () => {
       const patientsResponse = [
         {
