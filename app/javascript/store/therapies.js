@@ -68,11 +68,15 @@ export const actions = {
       });
   }),
 
-  [therapies.index]: ({ commit, rootGetters }) => new Promise((resolve, reject) => {
+  [therapies.index]: ({ commit, dispatch, rootGetters }) => new Promise((resolve, reject) => {
     commit(therapies.loading, true);
     rootGetters.httpClient
       .get('/api/therapies')
       .then((response) => {
+        const therapies = response.data;
+        therapies.forEach((therapy) => {
+          const promises = therapy.patients.map(patient => dispatch(patient.show, patient.id));
+        });
         commit(therapies.index, response.data);
         commit(therapies.loading, false);
         resolve(response.data);
