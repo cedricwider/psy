@@ -3,7 +3,7 @@ import axios from 'axios';
 import sinon from 'sinon';
 import nock from 'nock';
 import { mutations, actions } from 'store/therapies';
-import { therapies } from 'store/types';
+import { therapies, patients } from 'store/types';
 
 describe('TherapyStore', () => {
   describe('Mutations', () => {
@@ -115,13 +115,29 @@ describe('TherapyStore', () => {
         {
           id: 1,
           title: 'Test Thearpy',
-          patients: [{ id: 1, href: 'http://test.com' }],
+          patients: [{ id: 1, href: 'http://api.com/api/patients/1' }],
         },
       ];
       let httpClient;
       let rootGetters;
 
       describe('With a successful response', () => {
+        const patientResponse = {
+          id: 1,
+          salutation: 'Dr.',
+          firstName: 'jes',
+          lastName: 'test',
+          addresses: [
+            {
+              street: 'JestStreet',
+              houseNumber: '42',
+              zip: '1337',
+              town: 'JestTown',
+              country: 'Testistan',
+            },
+          ],
+        };
+
         beforeEach(() => {
           axios.defaults.baseURL = 'http://localhost/';
           nock('http://localhost/')
@@ -133,13 +149,13 @@ describe('TherapyStore', () => {
 
         it('Loads all therapies', async () => {
           const commit = sinon.spy();
-          const dispatch = sinon.spy();
+          const dispatch = sinon.stub().returns(patientResponse);
           const loadTherapies = actions[therapies.index];
 
           await loadTherapies({ commit, dispatch, rootGetters });
           expect(commit.calledWith(therapies.loading, true)).toBe(true);
           expect(dispatch.calledWith(patients.show, 1));
-          expect(commit.calledWith(therapies.index, therapiesResponse)).toBe(true);
+          expect(commit.calledWith(therapies.index)).toBe(true);
           expect(commit.calledWith(therapies.loading, false)).toBe(true);
         });
       });
