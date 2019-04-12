@@ -31,3 +31,14 @@ export const responseToPatient = (response) => {
     },
   };
 };
+export const extractPatientRefs = therapiesResponse => therapiesResponse.map(therapy => therapy.patients).flat();
+export const attachPatientsToTherapies = (therapies, patients) => {
+  const pats = JSON.parse(JSON.stringify(patients));
+  pats.forEach((patient) => {
+    // TODO: One patient can be in multiple therapies...! <-- there's currently a BUG
+    const therapy = therapies.find(t => t.patients.map(p => p.id).includes(patient.id));
+    const patientIndex = therapy.patients.findIndex(p => p.id === patient.id);
+    therapy.patients[patientIndex] = patient;
+  });
+  return pats;
+};

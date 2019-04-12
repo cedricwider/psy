@@ -1,4 +1,5 @@
 import { patients, therapies } from './types';
+import { extractPatientRefs, attachPatientsToTherapies } from '../helpers/formatters';
 
 const therapyState = {
   error: null,
@@ -69,24 +70,13 @@ export const actions = {
     rootGetters.httpClient
       .get('/api/therapies')
       .then(async (response) => {
-        // TODO: Factor-out this huge junk of code... (14j)
-        // Maybe a helper would be nice since we don't want to
-        // pollute the whole actions-namespace with private functions
-        const therapiesResponse = response.data;
-        const patientPromises = therapiesResponse
-          .map(therapy => therapy.patients)
-          .flat()
-          .map(patientRef => dispatch(patients.show, patientRef.id));
-        const patientResponses = await Promise.all(patientPromises);
-        patientResponses.forEach((patientResponse) => {
-          // TODO: One patient can be in multiple therapies...! <-- there's currently a BUG
-          const therapy = therapiesResponse.find(t => t.patients.map(p => p.id).includes(patientResponse.id));
-          const patientIndex = therapy.patients.findIndex(p => p.id === patientResponse.id);
-          therapy.patients[patientIndex] = patientResponse;
-        });
-        commit(therapies.index, therapiesResponse);
+        const patientResponses = await Promise.all(
+          extractPatientRefs(response.data).map(patientRef => dispatch(patients.show, patientRef.id)),
+        );
+        const therapyData = attachPatientsToTherapies(response.data, patientResponses);
+        commit(therapies.index, therapyData);
         commit(therapies.loading, false);
-        resolve(therapiesResponse);
+        resolve(therapyData);
       })
       .catch((error) => {
         console.error('Error while loading therapies: ', error);
