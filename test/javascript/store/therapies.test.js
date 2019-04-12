@@ -111,33 +111,27 @@ describe('TherapyStore', () => {
     });
 
     describe('Load all therapies', () => {
-      const therapiesResponse = [
-        {
-          id: 1,
-          title: 'Test Thearpy',
-          patients: [{ id: 1, href: 'http://api.com/api/patients/1' }],
-        },
-      ];
+      let therapiesResponse;
       let httpClient;
       let rootGetters;
+      const patientRef = { id: 1, href: 'http://api.com/api/patients/1' };
+      const patientResponse = {
+        id: 1,
+        salutation: 'Dr.',
+        firstName: 'jes',
+        lastName: 'test',
+        addresses: [
+          {
+            street: 'JestStreet',
+            houseNumber: '42',
+            zip: '1337',
+            town: 'JestTown',
+            country: 'Testistan',
+          },
+        ],
+      };
 
       describe('With a successful response', () => {
-        const patientResponse = {
-          id: 1,
-          salutation: 'Dr.',
-          firstName: 'jes',
-          lastName: 'test',
-          addresses: [
-            {
-              street: 'JestStreet',
-              houseNumber: '42',
-              zip: '1337',
-              town: 'JestTown',
-              country: 'Testistan',
-            },
-          ],
-        };
-
         beforeEach(() => {
           axios.defaults.baseURL = 'http://localhost/';
           nock('http://localhost/')
@@ -145,6 +139,13 @@ describe('TherapyStore', () => {
             .reply(200, therapiesResponse);
           httpClient = axios;
           rootGetters = { httpClient };
+          therapiesResponse = [
+            {
+              id: 1,
+              title: 'Test Thearpy',
+              patients: [patientRef],
+            },
+          ];
         });
 
         it('Loads all therapies', async () => {
@@ -157,6 +158,39 @@ describe('TherapyStore', () => {
           expect(dispatch.calledWith(patients.show, 1));
           expect(commit.calledWith(therapies.index)).toBe(true);
           expect(commit.calledWith(therapies.loading, false)).toBe(true);
+        });
+      });
+
+      describe('When a patient appears in multiple therapies', () => {
+        it('has therapies keep', async () => {
+          therapiesResponse = [
+            {
+              id: 1,
+              title: 'Test Thearpy',
+              patients: [patientRef],
+            },
+            {
+              id: 2,
+              title: 'Test Thearpy',
+              patients: [patientRef],
+            },
+          ];
+
+          nock('http://localhost/')
+            .get('/api/therapies')
+            .reply(200, therapiesResponse);
+
+          axios.defaults.baseURL = 'http://localhost/';
+          httpClient = axios;
+          rootGetters = { httpClient };
+
+          const commit = sinon.spy();
+          const loadTherapies = actions[therapies.index];
+          const dispatch = sinon.stub().returns(patientResponse);
+
+          const thrps = await loadTherapies({ commit, dispatch, rootGetters });
+          console.log(`Therapies Response: ${JSON.stringify(thrps)}`);
+          expect(thrps[1].patients[0]).toEqual(patientResponse);
         });
       });
 
