@@ -7,7 +7,7 @@
             class="button is-secondary"
             @click="onBackButtonClicked"
           >
-            Zurück
+            Zur Übersicht
           </button>
         </div>
       </div>
@@ -79,7 +79,7 @@ export default {
   computed: {},
   methods: {
     onBackButtonClicked() {
-      this.$router.go(-1);
+      this.$router.push({ name: 'therapies' });
     },
 
     onEditButtonClicked() {
