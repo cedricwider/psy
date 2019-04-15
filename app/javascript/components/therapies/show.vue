@@ -1,30 +1,24 @@
 <template>
   <section class="show">
     <c-loading :loading="isLoading">
-      <c-patient
-        v-if="patient"
-        :patient="patient"
+      <c-therapy
+        v-if="therapy"
+        :therapy="therapy"
       />
-      <router-link
-        class="button is-secondary"
-        :to="{ name: 'addressedit', params: { id: patient.id } }"
-      >
-        Bearbeiten
-      </router-link>
     </c-loading>
   </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { patients, addresses } from '../../store/types';
+import { therapies } from '../../store/types';
 import CLoading from '../shared/c_loading.vue';
-import CPatient from '../models/c_patient.vue';
+import CTherapy from '../models/c_therapy.vue';
 
 export default {
   components: {
     CLoading,
-    CPatient,
+    CTherapy,
   },
   data() {
     return {
@@ -33,33 +27,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      patient: patients.current,
-      patientLoading: patients.loading,
+      therapy: therapies.current,
+      therapyLoading: therapies.loading,
     }),
-    fullName() {
-      if (!this.patient) return '';
-      return `${this.patient.firstName} ${this.patient.lastName}`;
-    },
-    address() {
-      if (!this.patient) return null;
-      return this.patient.address;
-    },
   },
 
   mounted() {
-    this.loadCurrentPatient();
+    this.loadCurrentTherapy();
   },
   methods: {
     ...mapActions({
-      fetchPatient: patients.show,
-      setCurrentPatient: patients.current,
-      fetchAddress: addresses.load,
+      fetchTherapy: therapies.show,
+      setCurrentTherapy: therapies.current,
     }),
-    loadCurrentPatient() {
-      const patientId = this.$route.params.id;
+    loadCurrentTherapy() {
+      const therapyId = this.$route.params.id;
       this.isLoading = true;
-      return this.fetchPatient(patientId).then((patient) => {
-        this.setCurrentPatient(patient);
+      return this.fetchTherapy(therapyId).then((therapy) => {
+        this.setCurrentTherapy(therapy);
         this.isLoading = false;
       });
     },
