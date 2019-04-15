@@ -28,7 +28,7 @@
     <section>
       <div class="section-header">
         <h3>
-          Patient(en)
+          Klient(en)
         </h3>
       </div>
       <div class="columns">
