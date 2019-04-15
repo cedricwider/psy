@@ -226,14 +226,21 @@ describe('TherapyStore', () => {
     });
 
     describe('Loading a single therapy by id', () => {
+      const patientRef = { id: 1, href: 'http://localhost/api/paitents/1' };
       const therapy = {
         id: 1,
-        firts_name: 'jes',
-        last_name: 'test',
+        title: 'jes',
+        patients: [patientRef],
+      };
+      const patientResponse = {
+        id: 1,
+        salutation: 'Dr.',
+        firstName: 'jes',
+        lastName: 'test',
         addresses: [
           {
             street: 'JestStreet',
-            house_number: '42',
+            houseNumber: '42',
             zip: '1337',
             town: 'JestTown',
             country: 'Testistan',
@@ -255,10 +262,11 @@ describe('TherapyStore', () => {
       it('Loads a single therapy', async () => {
         const commit = sinon.spy();
         const getTherapy = actions[therapies.show];
+        const dispatch = sinon.stub().returns(patientResponse);
 
-        await getTherapy({ commit, rootGetters }, 1);
+        await getTherapy({ commit, dispatch, rootGetters }, 1);
         expect(commit.calledWith(therapies.loading, true)).toBe(true);
-        expect(commit.calledWith(therapies.update, therapy)).toBe(true);
+        expect(commit.calledWith(therapies.update)).toBe(true);
         expect(commit.calledWith(therapies.loading, false)).toBe(true);
       });
     });

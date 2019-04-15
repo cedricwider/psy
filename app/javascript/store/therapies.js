@@ -86,16 +86,22 @@ export const actions = {
       });
   }),
 
-  [therapies.show]: ({ commit, rootGetters }, index) => new Promise((resolve, reject) => {
+  [therapies.show]: ({ commit, dispatch, rootGetters }, index) => new Promise((resolve, reject) => {
     commit(therapies.loading, true);
     rootGetters.httpClient
       .get(`/api/therapies/${index}`)
-      .then((response) => {
-        commit(therapies.update, response.data);
+      .then(async (response) => {
+        let therapyData = response.data;
+        const patientResponses = await Promise.all(
+          therapyData.patients.map(patientRef => dispatch(patients.show, patientRef.id)),
+        );
+        therapyData = attachPatientsToTherapies([therapyData], patientResponses);
+        commit(therapies.update, therapyData[0]);
         commit(therapies.loading, false);
-        resolve(response.data);
+        resolve(therapyData[0]);
       })
       .catch((error) => {
+        console.error('Error while loading therpaies: ', error);
         commit(therapies.error, error.response.data);
         commit(therapies.loading, false);
         reject(error);
