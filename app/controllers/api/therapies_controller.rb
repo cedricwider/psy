@@ -8,7 +8,7 @@ class Api::TherapiesController < ApiController
   end
 
   def create
-    @therapy = current_user.therapies.create(therapy_params)
+    @therapy = current_user.therapies.create(therapy_params.merge(patients: therapy_patients))
     return render :show if @therapy.save
 
     render json: error(message: 'Invalid therapy data received', errors: @therapy.errors), status: :unprocessable_entity
@@ -16,10 +16,7 @@ class Api::TherapiesController < ApiController
 
   def update
     @therapy = current_therapy
-    patients = therapy_params[:patients]
-               .map { |patient_params| patient_params[:id] }
-               .map { |id| Patient.find(id) }
-    return render :show if @therapy.update(title: therapy_params[:title], patients: patients)
+    return render :show if @therapy.update(therapy_params.merge(patients: therapy_patients))
 
     render json: error(message: 'Error while updating therapy', errors: @therapy.errors), status: :unprocessable_entity
   end
@@ -33,10 +30,18 @@ class Api::TherapiesController < ApiController
   private
 
   def current_therapy
-    current_user.therapies.find(params[:id])
+    current_user.therapies.find(therapy_params[:id])
   end
 
   def therapy_params
-    params.permit(:title, patients: [:id])
+    params.permit(:id, :title, patients: [:id])
+  end
+
+  def therapy_patients
+    return [] unless therapy_params[:patients]
+
+    therapy_params[:patients]
+      .map { |patient| patient[:id] }
+      .map { |id| current_user.patients.find(id) }
   end
 end
