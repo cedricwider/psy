@@ -1,7 +1,23 @@
 <template>
   <section class="therapies-index">
+    <div class="level">
+      <div class="level-left">
+        <h1>Therapien</h1>
+      </div>
+      <div class="level-right">
+        <button
+          class="button is-secondary"
+          @click="onAddTherapyClicked"
+        >
+          Therapie erfassen
+        </button>
+      </div>
+    </div>
     <c-loading :loading="therapiesLoading">
-      <therapies-table :therapies="Object.values(allTherapies)" />
+      <therapies-table
+        :therapies="Object.values(allTherapies)"
+        @select="onTherapySelected"
+      />
     </c-loading>
   </section>
 </template>
@@ -33,6 +49,14 @@ export default {
     ...mapActions({
       loadTherapies: therapies.index,
     }),
+
+    onTherapySelected(therapy) {
+      this.$router.push({ name: 'therapyshow', params: { id: therapy.id } });
+    },
+
+    onAddTherapyClicked() {
+      this.$router.push({ name: 'therapynew' });
+    },
   },
 };
 </script>

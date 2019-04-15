@@ -2,6 +2,7 @@
   <section class="therapies-table">
     <b-table
       ref="table"
+      :row-class="() => 'tablerow'"
       :data="therapies"
       striped
       hoverable
@@ -26,12 +27,6 @@
           label="Klienten"
         >
           {{ patientNames(props.row.patients) }}
-        </b-table-column>
-        <b-table-column
-          field="active"
-          label="Aktiv"
-        >
-          {{ props.row.active }}
         </b-table-column>
       </template>
     </b-table>
@@ -67,4 +62,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tablerow {
+  cursor: pointer;
+}
+</style>
