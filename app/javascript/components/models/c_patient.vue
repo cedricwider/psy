@@ -1,35 +1,36 @@
 <template>
   <section class="patient">
-    <section class="title">
-      <h1>{{ fullName }}</h1>
-    </section>
-    <div class="phone">
-      {{ patient.phone }}
-    </div>
-    <section class="address">
-      <c-address :address="patient.address" />
-    </section>
+    <layout
+      :back-link="{ name: 'addresses' }"
+      :edit-link="{ name: 'addressedit', params: { id: patient.id } }"
+    >
+      <h1 slot="title">
+        {{ `${patient.firstName} ${patient.lastName}` }}
+      </h1>
+      <div class="phone">
+        {{ patient.phone }}
+      </div>
+      <section class="address">
+        <c-address :address="patient.address" />
+      </section>
+    </layout>
   </section>
 </template>
 
 <script>
 import CAddress from './c_address.vue';
+import Layout from '../shared/layouts/show.vue';
 
 export default {
   components: {
     CAddress,
+    Layout,
   },
 
   props: {
     patient: {
       type: Object,
       required: true,
-    },
-  },
-
-  computed: {
-    fullName() {
-      return `${this.patient.firstName} ${this.patient.lastName}`;
     },
   },
 };
