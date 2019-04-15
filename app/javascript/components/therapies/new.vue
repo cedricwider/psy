@@ -24,7 +24,8 @@ export default {
     return {
       errorMessage: null,
       therapy: {
-        address: {},
+        title: null,
+        patients: [],
       },
     };
   },

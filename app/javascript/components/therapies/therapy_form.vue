@@ -138,7 +138,7 @@ export default {
     onPatientDeleted(patient) {
       console.log(`Deleting patient: ${JSON.stringify(patient)}`);
       const patientIndex = this.therapy.patients.indexOf(patient);
-      this.therapy.patients.splice(patientIndex);
+      this.therapy.patients.splice(patientIndex, 1);
     },
     formatPatient(patient) {
       console.log(patient);

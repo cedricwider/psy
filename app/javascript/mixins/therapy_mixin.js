@@ -13,7 +13,7 @@ export const therapyMixin = {
       this.storeTherapy(this.therapy)
         .then((pat) => {
           this.clearForm();
-          this.$router.push({ name: 'addressshow', params: { id: pat.id } });
+          this.$router.push({ name: 'therapyshow', params: { id: pat.id } });
         })
         .catch(error => (this.errorMessage = error.message));
     },

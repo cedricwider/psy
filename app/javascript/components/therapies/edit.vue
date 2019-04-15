@@ -48,13 +48,6 @@ export default {
   },
   methods: {
     ...mapActions({ loadTherapy: therapies.show, setCurrentTherapy: therapies.current }),
-    saveTherapy(therapy) {
-      this.therapy = therapy;
-      this.setCurrentTherapy(this.therapy);
-      this.storeTherapy(this.therapy)
-        .then(thrpy => this.$router.push({ name: 'therapyshow', params: { id: thrpy.id } }))
-        .catch(error => (this.serverError = error));
-    },
   },
 };
 </script>
