@@ -84,6 +84,13 @@ RSpec.describe Api::TherapiesController, type: :controller do
     it 'Updates the therapy' do
       expect { put :update, params: therapy_params, format: :json }.to(change { therapy.reload.title })
     end
+
+    it 'Updates patient references, too' do
+      put_params = therapy_params.dup
+      patients = create_list(:patient, 3)
+      put_params[:patients] = patients
+      expect { put :update, params: put_params, format: :json }.to(change { therapy.reload.patients })
+    end
   end
 
   describe 'GET #destroy' do

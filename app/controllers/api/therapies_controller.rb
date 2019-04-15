@@ -16,7 +16,10 @@ class Api::TherapiesController < ApiController
 
   def update
     @therapy = current_therapy
-    return render :show if @therapy.update(therapy_params)
+    patients = therapy_params[:patients]
+               .map { |patient_params| patient_params[:id] }
+               .map { |id| Patient.find(id) }
+    return render :show if @therapy.update(title: therapy_params[:title], patients: patients)
 
     render json: error(message: 'Error while updating therapy', errors: @therapy.errors), status: :unprocessable_entity
   end
@@ -34,6 +37,6 @@ class Api::TherapiesController < ApiController
   end
 
   def therapy_params
-    params.permit(:title, :patient_id)
+    params.permit(:title, patients: [:id])
   end
 end
