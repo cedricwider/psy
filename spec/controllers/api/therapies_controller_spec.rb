@@ -93,7 +93,7 @@ RSpec.describe Api::TherapiesController, type: :controller do
     end
   end
 
-  describe 'GET #destroy' do
+  describe 'DELETE #destroy' do
     let(:therapy) { user.therapies.first }
     it 'returns http success' do
       delete :destroy, params: { id: therapy.id }, format: :json
@@ -101,8 +101,17 @@ RSpec.describe Api::TherapiesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    it 'deletes a therapy' do
-      expect { delete :destroy, params: { id: therapy.id }, format: :json }.to change { user.therapies.count }.by(-1)
+    it 'does not physically delete a therapy' do
+      expect do
+        delete :destroy, params: { id: therapy.id }, format: :json
+      end.not_to(change { user.therapies.count })
+    end
+
+    it 'sets the therapies active flag to false' do
+      expect(therapy.active).to be true
+      expect do
+        delete :destroy, params: { id: therapy.id }, format: :json
+      end.to(change { therapy.reload.active })
     end
   end
 end

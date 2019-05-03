@@ -3,6 +3,8 @@
     <layout
       :back-link="{ name: 'therapies' }"
       :edit-link="{ name: 'therapyedit', params: { id: therapy.id } }"
+      :show-delete="true"
+      @delete="deleteTherapy"
     >
       <h1 slot="title">
         {{ therapy.title }}
@@ -47,6 +49,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import therapies from '../../store/types.js';
 import Layout from '../shared/layouts/show.vue';
 import CPatient from './c_patient.vue';
 
@@ -60,15 +64,8 @@ export default {
     },
   },
 
-  computed: {},
   methods: {
-    onBackButtonClicked() {
-      this.$router.push({ name: 'therapies' });
-    },
-
-    onEditButtonClicked() {
-      this.$router.push({ name: 'therapyedit', params: { id: this.therapy.id } });
-    },
+    ...mapActions({ deleteTherapy: therapies.delete }),
   },
 };
 </script>
