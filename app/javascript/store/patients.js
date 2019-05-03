@@ -54,7 +54,7 @@ export const actions = {
   }),
 
   [patients.find]: ({ getters, dispatch }, id) => {
-    const patient = getters[patients.index].find(p => p.id === id);
+    const patient = getters[patients.index]().find(p => p.id === id);
     if (patient) {
       return Promise.resolve(patient);
     }

@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import axios from 'axios';
 import sinon from 'sinon';
 import nock from 'nock';
-import { mutations, actions } from 'store/patients';
+import { actions, mutations } from 'store/patients';
 import { patients } from 'store/types';
 import { patientToRequest, responseToPatient } from 'helpers/formatters';
 
@@ -121,23 +121,31 @@ describe('PatientStore', () => {
 
     describe('Find Patient', () => {
       describe('When the patient has already been loaded', () => {
-        const patient = {
-          id: 1,
-          salutation: 'Dr.',
-          firts_name: 'Jes',
-          last_name: 'Test',
-          phone: '0791234567',
-          address: {
-            street: 'JestStreet',
-            houseNumber: '42',
-            zip: '1337',
-            town: 'JestTown',
-            country: 'Testistan',
-          },
-        };
+        let patient;
+        let getters;
+
+        beforeEach(() => {
+          patient = {
+            id: 1,
+            salutation: 'Dr.',
+            firts_name: 'Jes',
+            last_name: 'Test',
+            phone: '0791234567',
+            address: {
+              street: 'JestStreet',
+              houseNumber: '42',
+              zip: '1337',
+              town: 'JestTown',
+              country: 'Testistan',
+            },
+          };
+          getters = {
+            [patients.index]: () => [patient],
+            doener: 'machtschoener',
+          };
+        });
 
         it('Returns the patient', async () => {
-          const getters = { [patients.index]: () => [patient] };
           const dispatch = sinon.spy();
           const findPatient = actions[patients.find];
 

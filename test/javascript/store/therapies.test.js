@@ -133,12 +133,6 @@ describe('TherapyStore', () => {
 
       describe('With a successful response', () => {
         beforeEach(() => {
-          axios.defaults.baseURL = 'http://localhost/';
-          nock('http://localhost/')
-            .get('/api/therapies')
-            .reply(200, therapiesResponse);
-          httpClient = axios;
-          rootGetters = { httpClient };
           therapiesResponse = [
             {
               id: 1,
@@ -146,6 +140,12 @@ describe('TherapyStore', () => {
               patients: [patientRef],
             },
           ];
+          axios.defaults.baseURL = 'http://localhost/';
+          nock('http://localhost/')
+            .get('/api/therapies')
+            .reply(200, therapiesResponse);
+          httpClient = axios;
+          rootGetters = { httpClient };
         });
 
         it('Loads all therapies', async () => {
