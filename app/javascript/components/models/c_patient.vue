@@ -3,6 +3,8 @@
     <layout
       :back-link="{ name: 'addresses' }"
       :edit-link="{ name: 'addressedit', params: { id: patient.id } }"
+      :show-delete="true"
+      @delete="deletePatient"
     >
       <h1 slot="title">
         {{ `${patient.firstName} ${patient.lastName}` }}
@@ -18,8 +20,10 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import CAddress from './c_address.vue';
 import Layout from '../shared/layouts/show.vue';
+import { patients } from '../../store/types';
 
 export default {
   components: {
@@ -32,6 +36,10 @@ export default {
       type: Object,
       required: true,
     },
+  },
+
+  methods: {
+    ...mapActions({ deletePatient: [patients.delete] }),
   },
 };
 </script>

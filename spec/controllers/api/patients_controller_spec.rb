@@ -90,8 +90,9 @@ RSpec.describe Api::PatientsController, type: :controller do
     end
   end
 
-  describe 'GET #destroy' do
+  describe 'DELETE #destroy' do
     let(:patient) { user.patients.first }
+
     it 'returns http success' do
       delete :destroy, params: { id: patient.id }, format: :json
 
@@ -99,7 +100,14 @@ RSpec.describe Api::PatientsController, type: :controller do
     end
 
     it 'deletes a patient' do
-      expect { delete :destroy, params: { id: patient.id }, format: :json }.to change { user.patients.count }.by(-1)
+      expect { delete :destroy, params: { id: patient.id }, format: :json }.not_to(change { user.patients.count })
+    end
+
+    it 'sets the therapies active flag to false' do
+      expect(patient.active).to be true
+      expect do
+        delete :destroy, params: { id: patient.id }, format: :json
+      end.to(change { patient.reload.active })
     end
   end
 end

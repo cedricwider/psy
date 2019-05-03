@@ -23,7 +23,7 @@ class Api::PatientsController < ApiController
 
   def destroy
     @patient = current_patient
-    @patient.destroy
+    @patient.update(active: false)
     render :show
   end
 

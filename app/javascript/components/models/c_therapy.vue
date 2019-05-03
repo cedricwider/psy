@@ -50,12 +50,11 @@
 
 <script>
 import { mapActions } from 'vuex';
-import therapies from '../../store/types.js';
+import { therapies } from '../../store/types';
 import Layout from '../shared/layouts/show.vue';
-import CPatient from './c_patient.vue';
 
 export default {
-  components: { CPatient, Layout },
+  components: { Layout },
 
   props: {
     therapy: {
