@@ -5,12 +5,6 @@
         v-if="patient"
         :patient="patient"
       />
-      <router-link
-        class="button is-secondary"
-        :to="{ name: 'addressedit', params: { id: patient.id } }"
-      >
-        Bearbeiten
-      </router-link>
     </c-loading>
   </section>
 </template>

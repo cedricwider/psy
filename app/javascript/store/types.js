@@ -21,11 +21,24 @@ export const patients = {
   current: 'patient/current',
   delete: 'patient/delete',
   error: 'patient/error',
+  find: 'patient/find',
   index: 'patient/index',
   loading: 'patient/loading',
   save: 'patient/save',
   show: 'patient/show',
   update: 'patient/update',
+};
+
+export const therapies = {
+  create: 'therapy/create',
+  current: 'therapy/current',
+  delete: 'therapy/delete',
+  error: 'therapy/error',
+  index: 'therapy/index',
+  loading: 'therapy/loading',
+  save: 'therapy/save',
+  show: 'therapy/show',
+  update: 'therapy/update',
 };
 
 export const addresses = {

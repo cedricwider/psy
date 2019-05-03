@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import axios from 'axios';
 import sinon from 'sinon';
 import nock from 'nock';
-import { mutations, actions } from 'store/patients';
+import { actions, mutations } from 'store/patients';
 import { patients } from 'store/types';
 import { patientToRequest, responseToPatient } from 'helpers/formatters';
 
@@ -116,6 +116,71 @@ describe('PatientStore', () => {
         expect(commit.calledWith(patients.loading, true)).toBe(true);
         expect(commit.calledWith(patients.create, patient)).toBe(true);
         expect(commit.calledWith(patients.loading, false)).toBe(true);
+      });
+    });
+
+    describe('Find Patient', () => {
+      describe('When the patient has already been loaded', () => {
+        let patient;
+        let getters;
+
+        beforeEach(() => {
+          patient = {
+            id: 1,
+            salutation: 'Dr.',
+            firts_name: 'Jes',
+            last_name: 'Test',
+            phone: '0791234567',
+            address: {
+              street: 'JestStreet',
+              houseNumber: '42',
+              zip: '1337',
+              town: 'JestTown',
+              country: 'Testistan',
+            },
+          };
+          getters = {
+            [patients.index]: () => [patient],
+            doener: 'machtschoener',
+          };
+        });
+
+        it('Returns the patient', async () => {
+          const dispatch = sinon.spy();
+          const findPatient = actions[patients.find];
+
+          const fetchedPatient = await findPatient({ getters, dispatch }, 1);
+          expect(fetchedPatient).toEqual(patient);
+          expect(dispatch.calledWith(patients.show, patient.id)).toBe(false);
+        });
+      });
+
+      describe('When the patient is not loaded yet', () => {
+        it('Loads the patient', async () => {
+          const patientId = 1;
+          const patient = {
+            id: patientId,
+            salutation: 'Dr.',
+            firts_name: 'Jes',
+            last_name: 'Test',
+            phone: '0791234567',
+            address: {
+              street: 'JestStreet',
+              houseNumber: '42',
+              zip: '1337',
+              town: 'JestTown',
+              country: 'Testistan',
+            },
+          };
+          const getters = { [patients.index]: () => [] };
+          const dispatch = sinon.stub();
+          dispatch.returns(new Promise(resolve => resolve(patient)));
+          const findPatient = actions[patients.find];
+
+          const fetchedPatient = await findPatient({ getters, dispatch }, patientId);
+          expect(fetchedPatient).toEqual(patient);
+          expect(dispatch.calledWith(patients.show, patientId)).toBe(true);
+        });
       });
     });
 

@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 export const patientToRequest = patient => ({
   id: patient.id,
   salutation: patient.salutation,
@@ -30,4 +32,16 @@ export const responseToPatient = (response) => {
       country: serverAddress.country,
     },
   };
+};
+export const extractPatientRefs = therapiesResponse => therapiesResponse.map(therapy => therapy.patients).flat();
+export const attachPatientsToTherapies = (therapies, patients) => {
+  const thrps = JSON.parse(JSON.stringify(therapies)); // "clone" object
+  patients.forEach((patient) => {
+    const patientTherapies = thrps.filter(t => t.patients.map(p => p.id).includes(patient.id));
+    patientTherapies.forEach((therapy) => {
+      const patientIndex = therapy.patients.findIndex(p => p.id === patient.id && p !== patient);
+      therapy.patients[patientIndex] = patient;
+    });
+  });
+  return thrps;
 };
