@@ -18,6 +18,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'rspec-rails', '~> 3.8'
   gem 'rspec'
+  gem 'rspec_junit_formatter'
   gem 'rubocop'
 end
 
