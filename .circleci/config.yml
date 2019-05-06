@@ -53,7 +53,7 @@ jobs:
             # echo '============Test Files================'
             # echo $TEST_FILES | cat -vte
             # echo '============/Test Files==============='
-            bundle exec rspec --format progress \
+            rspec spec/ --format progress \
                             --format RspecJunitFormatter \
                             --out /tmp/test-results/rspec.xml \
                             --format progress
