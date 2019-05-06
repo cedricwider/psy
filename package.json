@@ -43,6 +43,7 @@
       "json",
       "vue"
     ],
+    "reporters": ["default", "jest-junit"],
     "moduleDirectories": [
       "node_modules",
       "app/javascript",

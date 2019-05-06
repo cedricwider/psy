@@ -72,11 +72,18 @@ jobs:
       - run:
           name: Install everything
           command: yarn install
+      - run:
+          name: install JUnit coverage reporter
+          command: yarn add --dev jest-junit
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
-      - run: yarn test
+      - run:
+          name: Run tests with JUnit as reporter
+          command: yarn test --ci -runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
 
 workflows:
   version: 2
