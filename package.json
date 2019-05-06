@@ -55,7 +55,10 @@
     },
     "setupFiles": [
       "jest-plugin-context/setup"
-    ]
+    ],
+    "jest-junit": {
+      "outputName": "./reports/junit/js-test-results.xml"
+    }
   },
   "scripts": {
     "test": "./node_modules/.bin/jest --no-cache"

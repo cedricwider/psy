@@ -75,6 +75,9 @@ jobs:
       - run:
           name: install JUnit coverage reporter
           command: yarn add --dev jest-junit
+      - run:
+          name: Prepare test report
+          command: mkdir -p ./reports/junit
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
@@ -83,7 +86,12 @@ jobs:
           name: Run tests with JUnit as reporter
           command: yarn test --ci -runInBand --reporters=default --reporters=jest-junit
           environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+            JEST_JUNIT_OUTPUT: "./reports/junit/js-test-results.xml"
+      - store_test_results:
+          path: junit.xml
+      - store_artifacts:
+          path: junit.xml
+          destination: test-results
 
 workflows:
   version: 2
