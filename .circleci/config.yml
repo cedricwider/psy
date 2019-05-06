@@ -73,9 +73,6 @@ jobs:
           name: Install everything
           command: yarn install
       - run:
-          name: Install jest globally
-          command: yarn global add jest
-      - run:
           name: install JUnit coverage reporter
           command: yarn add --dev jest-junit
       - run:
@@ -89,7 +86,7 @@ jobs:
           name: Run tests with JUnit as reporter
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
-          command: jest --ci -runInBand --reporters=default --reporters=jest-junit
+          command: ./node_modules/.bin/jest --ci -runInBand --reporters=default --reporters=jest-junit
       - store_test_results:
           path: reports/junit
       - store_artifacts:
