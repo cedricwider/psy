@@ -84,14 +84,13 @@ jobs:
             - node_modules
       - run:
           name: Run tests with JUnit as reporter
-          command: yarn test --ci -runInBand --reporters=default --reporters=jest-junit
           environment:
-            JEST_JUNIT_OUTPUT: "./reports/junit/js-test-results.xml"
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+          command: jest --ci -runInBand --reporters=default --reporters=jest-junit
       - store_test_results:
-          path: junit.xml
+          path: reports/junit
       - store_artifacts:
-          path: junit.xml
-          destination: test-results
+          path: reports/junit
 
 workflows:
   version: 2
