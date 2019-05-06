@@ -73,6 +73,9 @@ jobs:
           name: Install everything
           command: yarn install
       - run:
+          name: Install jest globally
+          command: yarn global add jest
+      - run:
           name: install JUnit coverage reporter
           command: yarn add --dev jest-junit
       - run:
