@@ -68,7 +68,7 @@ jobs:
   frontend:
     working_directory: ~/mern-starter
     docker:
-      - image: circleci/node:8.2.1
+      - image: circleci/node:11.1.0
     steps:
       - checkout
       - restore_cache:
