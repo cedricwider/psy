@@ -53,11 +53,8 @@ jobs:
             # echo '============Test Files================'
             # echo $TEST_FILES | cat -vte
             # echo '============/Test Files==============='
-            rspec spec/ --format progress \
-                            --format RspecJunitFormatter \
-                            --out /tmp/test-results/rspec.xml \
-                            --format progress
-
+            TESTFILES=$(circleci tests glob "spec/**/*.rb" | circleci tests split --split-by=timings)
+            bundle exec rspec -- ${TESTFILES}
       # collect reports
       - store_test_results:
           path: /tmp/test-results
