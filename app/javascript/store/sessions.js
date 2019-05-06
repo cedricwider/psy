@@ -31,6 +31,7 @@ const actions = {
         commit(sessions.loading, false);
         const jwtToken = response.data.token;
         commit(sessions.token, jwtToken);
+        console.log('store/sessions.signIn:: Storing WebToken in window.logalStorage["psy-jwt-token"]');
         resolve(response.data);
       })
       .catch((error) => {

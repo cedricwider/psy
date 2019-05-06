@@ -53,7 +53,7 @@ router.beforeEach((to, _, next) => {
     return next();
   }
 
-  if (!window.localStorage.getItem('jwt-token')) {
+  if (!window.localStorage.getItem('psy-jwt-token')) {
     console.log('Router::login required');
     return next({ name: 'login' });
   }

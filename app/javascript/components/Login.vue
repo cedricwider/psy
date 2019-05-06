@@ -87,12 +87,11 @@ export default {
       console.log('Login.vue in submit');
       this.signIn({ email: this.email, password: this.password })
         .then(() => {
-          console.log('Login.vue Received sign-in response.');
-          window.setTimeout(() => {
-            this.$router.push({ name: 'index' });
-          }, 500);
+          console.log('components/Login.vue:: Received sign-in successful response.');
+          console.log('components/Login.vue:: Forwarding to /index');
+          this.$router.push({ name: 'index' });
         })
-        .catch(error => console.error(`Login.vue Error recieved: ${error}`));
+        .catch(error => console.error(`Login.vue Error recieved: ${JSON.stringify(error)}`));
     },
   },
 };
