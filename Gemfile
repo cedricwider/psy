@@ -17,6 +17,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'rspec-rails', '~> 3.8'
+  gem 'rspec'
   gem 'rubocop'
 end
 
