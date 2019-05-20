@@ -118,6 +118,10 @@ workflows:
       - frontend
       - backend
       - deploy_staging:
+          filters:
+            branches:
+              only:
+                -master
           requires:
             - frontend
             - backend
@@ -126,5 +130,9 @@ workflows:
           requires:
             - deploy_staging
       - deploy_production:
+          filters:
+            branches:
+              only:
+                -master
           requires:
             - approval
