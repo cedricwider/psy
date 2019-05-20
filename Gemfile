@@ -10,7 +10,7 @@ gem 'jwt'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.1'
-gem 'webpacker'
+gem 'webpacker', '~> 3.6.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
