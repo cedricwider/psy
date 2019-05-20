@@ -38,5 +38,32 @@ RSpec.describe Therapy, type: :model do
         expect(therapy.patients.first).to eq patient
       end
     end
+
+    describe 'Sessions' do
+      context 'Read/Write access' do
+        let(:therapy) { create(:therapy) }
+        let(:session_attributes) { attributes_for(:session, :without_therapy) }
+
+        before(:each) do
+          therapy.sessions.create(session_attributes)
+        end
+
+        it 'holds on to its sessions' do
+          expect(therapy.sessions.first.title).to eq session_attributes[:title]
+        end
+      end
+      context 'Destroy' do
+        let(:therapy) { create(:therapy) }
+        let!(:session) do
+          therapy.sessions.create(attributes_for(:session, :without_therapy))
+        end
+
+        it 'destroys its sessions when it is destroyed' do
+          expect(therapy.sessions.count).to be 1
+          therapy.destroy
+          expect(Session.where(id: session.id).count).to be 0
+        end
+      end
+    end
   end
 end

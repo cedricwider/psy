@@ -121,7 +121,7 @@ workflows:
           filters:
             branches:
               only:
-                -master
+                - master
           requires:
             - frontend
             - backend
@@ -133,6 +133,6 @@ workflows:
           filters:
             branches:
               only:
-                -master
+                - master
           requires:
             - approval

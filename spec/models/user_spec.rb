@@ -42,4 +42,16 @@ describe User, type: :model do
       expect(user.email).to eq upcase_email.downcase
     end
   end
+
+  describe 'Associations' do
+    describe 'Sessions' do
+      let(:user) { create(:user) }
+      let(:therapy) { create(:therapy, user: user) }
+      let(:session) { create(:session, therapy: therapy) }
+
+      it 'has access to sessions' do
+        expect(user.sessions).to eq [session]
+      end
+    end
+  end
 end
