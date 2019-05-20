@@ -2,7 +2,9 @@
   <section class="therapies-index">
     <div class="level">
       <div class="level-left">
-        <h1>Therapien</h1>
+        <h1 class="title is-1">
+          Therapien
+        </h1>
       </div>
       <div class="level-right">
         <button
@@ -61,4 +63,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+</style>
