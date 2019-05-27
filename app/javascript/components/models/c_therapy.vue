@@ -10,10 +10,17 @@
         {{ therapy.title }}
       </h1>
       <section>
-        <div class="section-header">
-          <h3>
-            Klient(en)
-          </h3>
+        <div class="section-header level">
+          <div class="level-left">
+            <h3>
+              Klient(en)
+            </h3>
+          </div>
+          <div class="level-right">
+            <p class="is-right">
+              Preis: CHF {{ therapy.price }}.-
+            </p>
+          </div>
         </div>
         <div class="columns">
           <div

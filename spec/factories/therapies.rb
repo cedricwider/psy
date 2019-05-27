@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :therapy do
     title { FFaker::Lorem.word }
+    price_cents { 180_00 }
 
     association :user, factory: :user
 

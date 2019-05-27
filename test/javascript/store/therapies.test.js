@@ -82,10 +82,18 @@ describe('TherapyStore', () => {
 
   describe('Actions', () => {
     describe('Create Therapy', () => {
+      const therapyResponse = {
+        id: 1,
+        title: 'Test Therapy',
+        price_cents: 18000,
+        patients: [],
+      };
+
       const therapy = {
         id: 1,
         title: 'Test Therapy',
-        patients: [{ id: 1, href: 'http://test.com' }],
+        price: 180,
+        patients: [],
       };
       let httpClient;
       let rootGetters;
@@ -94,7 +102,7 @@ describe('TherapyStore', () => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
           .post('/api/therapies')
-          .reply(200, therapy);
+          .reply(200, therapyResponse);
         httpClient = axios;
         rootGetters = { httpClient };
       });
@@ -105,7 +113,7 @@ describe('TherapyStore', () => {
 
         await createTherapy({ commit, rootGetters }, therapy);
         expect(commit.calledWith(therapies.loading, true)).toBe(true);
-        expect(commit.calledWith(therapies.create, therapy)).toBe(true);
+        expect(commit.calledWithMatch(therapies.create, therapy)).toBe(true);
         expect(commit.calledWith(therapies.loading, false)).toBe(true);
       });
     });
@@ -275,6 +283,13 @@ describe('TherapyStore', () => {
       const therapy = {
         id: 1,
         title: 'Test Thearpy',
+        price: 180,
+        patients: [{ id: 1, href: 'http://test.com' }],
+      };
+      const therapyRequest = {
+        id: 1,
+        title: 'Test Thearpy',
+        price_cents: 18000,
         patients: [{ id: 1, href: 'http://test.com' }],
       };
       let httpClient;
@@ -283,8 +298,8 @@ describe('TherapyStore', () => {
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .put('/api/therapies/1', therapy)
-          .reply(200, therapy);
+          .put('/api/therapies/1', therapyRequest)
+          .reply(200, therapyRequest);
         httpClient = axios;
         rootGetters = { httpClient };
       });
@@ -295,7 +310,7 @@ describe('TherapyStore', () => {
 
         await updateTherapy({ commit, rootGetters }, therapy);
         expect(commit.calledWith(therapies.loading, true)).toBe(true);
-        expect(commit.calledWith(therapies.update, therapy)).toBe(true);
+        expect(commit.calledWithMatch(therapies.update, therapy)).toBe(true);
         expect(commit.calledWith(therapies.loading, false)).toBe(true);
       });
     });

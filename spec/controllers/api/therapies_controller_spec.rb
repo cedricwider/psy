@@ -40,6 +40,24 @@ RSpec.describe Api::TherapiesController, type: :controller do
         .by(1)
     end
 
+    describe 'Storing values' do
+      let(:title) { 'Rspec Therapy' }
+      let(:active) { false }
+      let(:price_cents) { 1337 }
+      let(:therapy_params) { { title: title, active: active, price_cents: price_cents } }
+      let(:therapy) { user.therapies.order(:created_at).last }
+
+      before do
+        post :create, params: therapy_params, format: :json
+      end
+
+      it 'Stores correct values' do
+        expect(therapy.title).to eq title
+        expect(therapy.active).to eq active
+        expect(therapy.price_cents).to eq price_cents
+      end
+    end
+
     context 'With nested address' do
       let(:therapy_params) do
         attributes_for(:therapy)
