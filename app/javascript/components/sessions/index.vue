@@ -8,11 +8,10 @@
         </div>
         <div class="level-right" />
       </div>
-      <c-loading :loading="therapiesLoading" />
     </section>
     <!-- Session Form -->
     <section class="session-form">
-      <div class="placeholder" />
+      <session-form />
     </section>
     <!-- Session List -->
     <section class="session-list">
@@ -22,7 +21,18 @@
 </template>
 
 <script>
-export default {};
+import SessionForm from './session_form';
+
+export default {
+  components: {
+    SessionForm,
+  },
+  data() {
+    return {
+      sessionsLoading: false,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
