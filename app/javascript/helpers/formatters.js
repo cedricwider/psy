@@ -1,21 +1,5 @@
 import 'babel-polyfill';
 
-export const patientToRequest = patient => ({
-  id: patient.id,
-  salutation: patient.salutation,
-  first_name: patient.firstName,
-  last_name: patient.lastName,
-  phone: patient.phone,
-  addresses: [
-    {
-      street: patient.address.street,
-      house_number: patient.address.houseNumber,
-      zip: patient.address.zip,
-      town: patient.address.town,
-      country: patient.address.country,
-    },
-  ],
-});
 export const responseToPatient = (response) => {
   const serverAddress = response.addresses[0] || {};
   return {
@@ -33,6 +17,40 @@ export const responseToPatient = (response) => {
     },
   };
 };
+
+export const patientToRequest = patient => ({
+  id: patient.id,
+  salutation: patient.salutation,
+  first_name: patient.firstName,
+  last_name: patient.lastName,
+  phone: patient.phone,
+  addresses: [
+    {
+      street: patient.address.street,
+      house_number: patient.address.houseNumber,
+      zip: patient.address.zip,
+      town: patient.address.town,
+      country: patient.address.country,
+    },
+  ],
+});
+
+export const responseToTherapy = response => ({
+  active: response.active,
+  id: response.id,
+  patients: response.patients,
+  price: response.price_cents / 100,
+  title: response.title,
+});
+
+export const therapyToRequest = therapy => ({
+  active: therapy.active,
+  id: therapy.id,
+  patients: therapy.patients,
+  price_cents: therapy.price * 100,
+  title: therapy.title,
+});
+
 export const extractPatientRefs = therapiesResponse => therapiesResponse.map(therapy => therapy.patients).flat();
 export const attachPatientsToTherapies = (therapies, patients) => {
   const thrps = JSON.parse(JSON.stringify(therapies)); // "clone" object

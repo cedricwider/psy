@@ -18,6 +18,13 @@
           placeholder="Hans"
         />
       </b-field>
+      <b-field label="Preis">
+        <b-numberinput
+          v-model="therapy.price"
+          step="10"
+          controls-position="compact"
+        />
+      </b-field>
 
       <!-- Patient selection -->
       <section class="patient-selection">

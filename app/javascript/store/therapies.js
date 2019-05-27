@@ -1,5 +1,10 @@
 import { patients, therapies } from './types';
-import { extractPatientRefs, attachPatientsToTherapies } from '../helpers/formatters';
+import {
+  extractPatientRefs,
+  attachPatientsToTherapies,
+  therapyToRequest,
+  responseToTherapy,
+} from '../helpers/formatters';
 
 const therapyState = {
   error: null,
@@ -52,9 +57,10 @@ export const actions = {
   [therapies.create]: ({ commit, rootGetters }, therapy) => new Promise((resolve, reject) => {
     commit(therapies.loading, true);
     rootGetters.httpClient
-      .post('/api/therapies', therapy)
+      .post('/api/therapies', therapyToRequest(therapy))
       .then((response) => {
-        commit(therapies.create, response.data);
+        const thrpy = responseToTherapy(response.data);
+        commit(therapies.create, thrpy);
         commit(therapies.loading, false);
         resolve(response.data);
       })
@@ -70,10 +76,11 @@ export const actions = {
     rootGetters.httpClient
       .get('/api/therapies')
       .then(async (response) => {
+        let therapyData = response.data.map(thrpy => responseToTherapy(thrpy));
         const patientResponses = await Promise.all(
-          extractPatientRefs(response.data).map(patientRef => dispatch(patients.show, patientRef.id)),
+          extractPatientRefs(therapyData).map(patientRef => dispatch(patients.show, patientRef.id)),
         );
-        const therapyData = attachPatientsToTherapies(response.data, patientResponses);
+        therapyData = attachPatientsToTherapies(therapyData, patientResponses);
         commit(therapies.index, therapyData);
         commit(therapies.loading, false);
         resolve(therapyData);
@@ -91,7 +98,7 @@ export const actions = {
     rootGetters.httpClient
       .get(`/api/therapies/${index}`)
       .then(async (response) => {
-        let therapyData = response.data;
+        let therapyData = responseToTherapy(response.data);
         const patientResponses = await Promise.all(
           therapyData.patients.map(patientRef => dispatch(patients.show, patientRef.id)),
         );
@@ -114,12 +121,15 @@ export const actions = {
 
   [therapies.update]: ({ commit, rootGetters }, therapy) => new Promise((resolve, reject) => {
     commit(therapies.loading, true);
+    console.log(`Therapy Request: ${JSON.stringify(therapyToRequest(therapy))}`);
     rootGetters.httpClient
-      .put(`/api/therapies/${therapy.id}`, therapy)
+      .put(`/api/therapies/${therapy.id}`, therapyToRequest(therapy))
       .then((response) => {
-        commit(therapies.update, response.data);
+        const thrps = responseToTherapy(response.data);
+        console.log(`Therapy after reponse: ${JSON.stringify(responseToTherapy(response.data))}`);
+        commit(therapies.update, thrps);
         commit(therapies.loading, false);
-        resolve(response.data);
+        resolve(thrps);
       })
       .catch((error) => {
         commit(therapies.error, error.response.data);
