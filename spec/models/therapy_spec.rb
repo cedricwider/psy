@@ -11,8 +11,16 @@ RSpec.describe Therapy, type: :model do
       expect(subject).to be_valid
     end
 
-    context 'title' do
+    describe 'title' do
       let(:therapy_params) { attributes_for(:therapy, user_id: user.id, title: nil) }
+
+      it 'Requires the title to be set' do
+        expect(subject).not_to be_valid
+      end
+    end
+
+    describe 'price_cents' do
+      let(:therapy_params) { attributes_for(:therapy, user_id: user.id, price_cents: nil) }
 
       it 'Requires the title to be set' do
         expect(subject).not_to be_valid
