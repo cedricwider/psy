@@ -34,7 +34,7 @@ class Api::TherapiesController < ApiController
   end
 
   def therapy_params
-    params.permit(:id, :title, patients: [:id])
+    params.permit(:id, :title, :active, :price_cents, patients: [:id])
   end
 
   def therapy_patients
