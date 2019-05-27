@@ -13,6 +13,8 @@ describe 'api/therapies/show' do
 
     expect(json['id']).to eq therapy.id
     expect(json['title']).to eq therapy.title
+    expect(json['active']).to eq therapy.active
+    expect(json['price_cents']).to eq therapy.price_cents
   end
 
   context 'With patient' do
