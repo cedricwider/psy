@@ -42,7 +42,7 @@
 
         <router-link
           v-if="isLoggedIn"
-          to="/timesheet"
+          to="/sessions"
           class="navbar-item psy-menu-item"
           :class="{ active: timeSheetActive }"
         >
