@@ -7,25 +7,28 @@
         :error="error"
       />
 
-      <!-- Title -->
-      <b-field
-        label="Bezeichnung"
-        expanded
-      >
-        <b-input
-          v-model="therapy.title"
-          type="text"
-          placeholder="Hans"
-        />
-      </b-field>
-      <b-field label="Preis">
-        <b-numberinput
-          v-model="therapy.price"
-          step="10"
-          controls-position="compact"
-        />
-      </b-field>
-
+      <!-- Title/Price -->
+      <div class="columns">
+        <div class="column">
+          <b-field label="Titel">
+            <b-input
+              v-model="therapy.title"
+              expanded
+              type="text"
+              placeholder="Hans"
+            />
+          </b-field>
+        </div>
+        <div class="column is-one-fifth">
+          <b-field label="Preis">
+            <b-numberinput
+              v-model="therapy.price"
+              step="10"
+              controls-position="compact"
+            />
+          </b-field>
+        </div>
+      </div>
       <!-- Patient selection -->
       <section class="patient-selection">
         <b-field label="Klient hinzufügen">
