@@ -34,6 +34,7 @@
     </section>
 
     <section class="table">
+      <h2>Table</h2>
       <c-table
         :column-names="table.columns"
         :table-data="table.data"
@@ -53,12 +54,23 @@
       </c-table>
     </section>
 
-    <section class="list">
+    <section class="collection-list">
+      <h2>List</h2>
       <c-list
         v-slot="slotProps"
         :collection="listCollection"
       >
-        {{ slotProps.item.text }}
+        <c-list-cell>
+          <template v-slot:icon>
+            <b-icon icon="face" />
+          </template>
+          <template>
+            {{ slotProps.item.text }}
+          </template>
+          <template v-slot:description>
+            Doener macht schoener
+          </template>
+        </c-list-cell>
       </c-list>
     </section>
   </div>
@@ -68,9 +80,15 @@
 import CLoading from './c_loading.vue';
 import CTable from './c_table.vue';
 import CList from './list_view.vue';
+import CListCell from './list_cell.vue';
 
 export default {
-  components: { CLoading, CTable, CList },
+  components: {
+    CLoading,
+    CTable,
+    CList,
+    CListCell,
+  },
   data() {
     return {
       fullScreenLoading: false,
