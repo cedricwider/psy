@@ -52,15 +52,25 @@
         </template>
       </c-table>
     </section>
+
+    <section class="list">
+      <c-list
+        v-slot="slotProps"
+        :collection="listCollection"
+      >
+        {{ slotProps.item.text }}
+      </c-list>
+    </section>
   </div>
 </template>
 
 <script>
 import CLoading from './c_loading.vue';
 import CTable from './c_table.vue';
+import CList from './list_view.vue';
 
 export default {
-  components: { CLoading, CTable },
+  components: { CLoading, CTable, CList },
   data() {
     return {
       fullScreenLoading: false,
@@ -74,6 +84,7 @@ export default {
           { first: 'Banana', second: 'Apple', last: 'Orange' },
         ],
       },
+      listCollection: [{ text: 'doener' }, { text: 'macht' }, { text: 'schoener' }],
     };
   },
   methods: {
