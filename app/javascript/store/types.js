@@ -41,6 +41,18 @@ export const therapies = {
   update: 'therapy/update',
 };
 
+export const therapySessions = {
+  create: 'therapySessions/create',
+  current: 'therapySessions/current',
+  delete: 'therapySessions/delete',
+  error: 'therapySessions/error',
+  index: 'therapySessions/index',
+  loading: 'therapySessions/loading',
+  save: 'therapySessions/save',
+  show: 'therapySessions/show',
+  update: 'therapySessions/update',
+};
+
 export const addresses = {
   create: 'address/create',
   current: 'address/current',
