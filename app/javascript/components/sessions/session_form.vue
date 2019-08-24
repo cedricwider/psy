@@ -7,18 +7,19 @@
       />
 
       <!-- Therapy -->
-      <b-field label="Therapie">
+      <b-field labea="Therapie">
         <b-select
+          v-model="therapyId"
           placeholder="Therapie auswählen..."
           :loading="therapiesLoading"
           @input="onTherapySelected"
         >
           <option
-            v-for="therapy in allTherapies"
-            :key="therapy.id"
-            :value="therapy"
+            v-for="(therapyOption, index) in allTherapies"
+            :key="index"
+            :value="therapyOption.id"
           >
-            {{ therapyAsOptionString(therapy) }}
+            {{ therapyAsOptionString(therapyOption) }}
           </option>
         </b-select>
       </b-field>
@@ -36,13 +37,16 @@
         <div class="column is-one-third">
           <!-- Duration -->
           <b-field label="Dauer">
-            <b-select placeholder="Dauer auswählen...">
+            <b-select
+              v-model="duration"
+              placeholder="Dauer auswählen..."
+            >
               <option
-                v-for="duration in durations"
-                :key="duration"
-                :value="duration"
+                v-for="durationOption in durations"
+                :key="durationOption"
+                :value="durationOption"
               >
-                {{ duration }}
+                {{ durationOption }}
               </option>
             </b-select>
           </b-field>
@@ -80,7 +84,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { therapies } from '../../store/types';
+import moment from 'moment';
+import { therapies, therapySessions } from '../../store/types';
 import FormContainer from '../shared/FormContainer.vue';
 import Error from '../shared/Error.vue';
 
@@ -91,17 +96,24 @@ export default {
   },
   data() {
     return {
-      durations: [1, 2, 3, 4, 5],
+      durations: [30, 60, 90, 120, 180],
       error: null,
       errorMessage: '',
       sessionPrice: 0,
       startDate: new Date(),
       therapyId: null,
-      duration: null,
+      duration: 60,
     };
   },
   computed: {
-    ...mapGetters({ therapiesLoading: therapies.loading, allTherapies: therapies.index }),
+    ...mapGetters({
+      therapiesLoading: therapies.loading,
+      allTherapies: therapies.index,
+      findTherapyById: therapies.find,
+    }),
+    title() {
+      return moment(this.startDate).format('dddd, Do MMMM YYYY');
+    },
   },
   mounted() {
     this.loadTherapies();
@@ -109,19 +121,41 @@ export default {
   methods: {
     ...mapActions({
       loadTherapies: therapies.index,
+      saveTherapySession: therapySessions.save,
     }),
     therapyAsOptionString(therapy) {
       return `${therapy.title} (${therapy.patients.map(p => p.lastName).join(', ')})`;
     },
-    onTherapySelected(therapy) {
-      this.therapyId = therapy.id;
-      this.sessionPrice = therapy.price;
+    onTherapySelected(therapyId) {
+      const therapy = this.findTherapyById(therapyId);
+      if (therapy) {
+        this.sessionPrice = therapy.price;
+      } else {
+        this.sessionPrice = 0;
+      }
     },
     onSaveButtonClicked() {
-      console.log('Save button clicked. Please implement some logic');
+      console.log(`Saving therapySession: ${JSON.stringify(this.formToTherapy())}`);
+      this.saveTherapySession(this.formToTherapy());
+      this.resetForm();
     },
     onCancelButtonClicked() {
-      console.log('Cancel button clicked. Please implement some logic');
+      this.resetForm();
+    },
+    resetForm() {
+      this.sessionPrice = 0;
+      this.startDate = new Date();
+      this.therapyId = null;
+      this.duration = 60;
+    },
+    formToTherapy() {
+      return {
+        therapyId: this.therapyId,
+        title: `Therapiesitzung vom ${this.title}`,
+        startTime: this.startDate,
+        duration: this.duration,
+        price: this.sessionPrice,
+      };
     },
   },
 };

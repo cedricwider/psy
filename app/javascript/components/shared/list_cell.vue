@@ -50,6 +50,7 @@ export default {
   flex-wrap: nowrap;
   justify-content: space-between;
   padding: 0;
+  curstor: pointer;
 }
 .cell-body {
   flex: 2;

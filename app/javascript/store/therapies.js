@@ -18,6 +18,7 @@ const getters = {
   [therapies.current]: state => state.current,
   [therapies.loading]: state => state.loading,
   [therapies.index]: state => state.index,
+  [therapies.find]: state => therapyId => state.index[therapyId],
 };
 
 export const mutations = {

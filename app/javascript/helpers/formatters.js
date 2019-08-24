@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import moment from 'moment';
 
 export const responseToPatient = (response) => {
   const serverAddress = response.addresses[0] || {};
@@ -54,17 +55,18 @@ export const therapyToRequest = therapy => ({
 export const responseToSession = response => ({
   id: response.id,
   title: response.title,
-  startTime: response.start_time,
-  duration: response.duration_minutes / 60,
+  startTime: moment(response.start_time),
+  duration: response.duration_minutes,
   price: response.price_cents / 100.0,
 });
 
-export const sessionToRequest = session => ({
-  id: session.id,
-  title: session.title,
-  start_time: session.startTime,
-  duration_minutes: session.durtaion * 60,
-  price_cents: session.price * 100,
+export const sessionToRequest = therapySession => ({
+  id: therapySession.id,
+  title: therapySession.title,
+  start_time: therapySession.startTime.toJSON(),
+  duration_minutes: therapySession.duration,
+  price_cents: therapySession.price * 100,
+  therapy_id: therapySession.therapyId,
 });
 
 export const extractPatientRefs = therapiesResponse => therapiesResponse.map(therapy => therapy.patients).flat();

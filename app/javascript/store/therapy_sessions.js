@@ -6,6 +6,7 @@ const therapySessionState = {
   current: null,
   index: [],
   loading: false,
+  therapySession: null,
 };
 
 const getters = {
@@ -50,8 +51,10 @@ export const mutations = {
 export const actions = {
   [therapySessions.create]: ({ commit, rootGetters }, therapySession) => new Promise((resolve, reject) => {
     commit(therapySessions.loading, true);
+    const therapySessionRequest = sessionToRequest(therapySession);
+    console.log(`Sending Request: ${JSON.stringify(therapySessionRequest)}`);
     rootGetters.httpClient
-      .post('/api/sessions', sessionToRequest(therapySession))
+      .post('/api/sessions', therapySessionRequest)
       .then((response) => {
         commit(therapySessions.create, response.data);
         commit(therapySessions.loading, false);
@@ -80,6 +83,11 @@ export const actions = {
         reject(error);
       });
   }),
+
+  [therapySessions.save]: ({ dispatch }, therapySession) => {
+    const saveOperation = therapySession.id ? therapySessions.update : therapySessions.create;
+    return dispatch(saveOperation, therapySession);
+  },
 
   [therapySessions.show]: ({ commit, rootGetters }, index) => new Promise((resolve, reject) => {
     commit(therapySessions.loading, true);

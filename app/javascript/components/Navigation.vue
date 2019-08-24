@@ -123,6 +123,15 @@ export default {
     isLoggedIn() {
       return this.token !== null;
     },
+    timeSheetActive() {
+      return this.$route.path.match(/sessions/);
+    },
+    addressesActive() {
+      return this.$route.path.match(/addresses/);
+    },
+    therapiesActive() {
+      return this.$route.path.match(/therapies/);
+    },
   },
 
   methods: {

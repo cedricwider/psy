@@ -15,22 +15,45 @@
     </section>
     <!-- Session List -->
     <section class="session-list">
-      <div class="placeholder" />
+      <c-loading :loading="sessionsLoading">
+        <session-list
+          :therapy-sessions="sessions"
+          @select="onSessionSelected"
+        />
+      </c-loading>
     </section>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import SessionForm from './session_form';
+import SessionList from './therapy_sessions_list';
+import CLoading from '../shared/c_loading';
+import { therapySessions } from '../../store/types';
 
 export default {
   components: {
+    CLoading,
     SessionForm,
+    SessionList,
   },
-  data() {
-    return {
-      sessionsLoading: false,
-    };
+  computed: {
+    ...mapGetters({
+      sessions: therapySessions.index,
+      sessionsLoading: therapySessions.loading,
+    }),
+  },
+  methods: {
+    ...mapActions({
+      loadTherapies: therapySessions.index,
+    }),
+    onSessionSelected(session) {
+      this.$router.push({ name: 'sessionshow', params: { id: session.id } });
+    },
+  },
+  mounted() {
+    this.loadTherapies();
   },
 };
 </script>
