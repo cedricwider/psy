@@ -1,14 +1,38 @@
-@import './colors.scss';
+@import './gruvbox-light.scss';
 @import './fonts.scss';
 
 // ...update Bulma variables
 $family-primary: $normal-font;
 $family-secondary: $highlight-font;
 $family-sans-serif: $normal-font;
-$primary: $rosy-brown;
-$white: $almost-white;
-$black: $almost-black;
-$link: $dim-gray;
+
+$primary: $gbl-green;
+$info: $gbl-aqua;
+$warning: $gbl-yellow;
+$danger: $gbl-red;
+$light: $gbl-fg;
+$link: $gbl-blue;
+
+$white: $gbl-bg;
+$black: $gbl-fg;
+$grey: $gbl-gray;
+$green: $gbl-green;
+$orange: $gbl-orange;
+$yellow: $gbl-yellow;
+$green: $gbl-green;
+$blue: $gbl-blue;
+$purple: $gbl-purple;
+$red: $gbl-red;
+
+$table-background-color: $gbl-bg;
+$table-striped-row-even-background-color: $gbl-bg3;
+$table-cell-border: $gbl-gray;
+$table-row-hover-background-color: $gbl-aqua;
+$table-striped-row-even-hover-background-color: $gbl-aqua;
+
+
+
+// use gruvbox colors
 
 $navbar-height: 4rem;
 $navbar-item-img-max-height: 3.5rem;
@@ -32,4 +56,5 @@ body {
   background-size: cover;
 }
 
-@import '../../../../node_modules/bulma/bulma.sass';
+// @import '../../../../node_modules/bulma/bulma.sass';
+@import '~bulma/bulma.sass';
