@@ -44,6 +44,7 @@
           v-if="isLoggedIn"
           to="/timesheet"
           class="navbar-item psy-menu-item"
+          :class="{ active: timeSheetActive }"
         >
           Zeit Rapport
         </router-link>
@@ -52,6 +53,7 @@
           v-if="isLoggedIn"
           to="/addresses"
           class="navbar-item psy-menu-item"
+          :class="{ active: addressesActive }"
         >
           Addressbuch
         </router-link>
@@ -60,6 +62,7 @@
           v-if="isLoggedIn"
           to="/therapies"
           class="navbar-item psy-menu-item"
+          :class="{ active: therapiesActive }"
         >
           Therapien
         </router-link>
@@ -138,4 +141,36 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '../packs/style/gruvbox-light.scss';
+.psy-navigation {
+  margin-bottom: 2.5rem;
+}
+.psy-menu-item {
+  &:hover {
+    background-color: $gbl-aqua;
+    color: $gbl-bg;
+  }
+}
+
+.psy-menu-item.router-link-active,
+.psy-menu-item.router-link-exact-active {
+  background-color: $gbl-bg;
+  color: $gbl-fg;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+  &:hover {
+    background-color: $gbl-aqua;
+    color: $gbl-bg;
+  }
+}
+
+.psy-logout-button {
+  margin-right: 0.5rem;
+  &:hover {
+    background-color: $gbl-aqua;
+    color: $gbl-bg;
+  }
+}
+</style>
