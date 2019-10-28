@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import moment from 'moment';
 
 export const responseToPatient = (response) => {
   const serverAddress = response.addresses[0] || {};
@@ -51,7 +52,28 @@ export const therapyToRequest = therapy => ({
   title: therapy.title,
 });
 
+export const responseToSession = response => ({
+  id: response.id,
+  href: response.href,
+  title: response.title,
+  startTime: moment(response.start_time),
+  duration: response.duration_minutes,
+  price: response.price_cents / 100.0,
+  therapy: response.therapy,
+});
+
+export const sessionToRequest = therapySession => ({
+  id: therapySession.id,
+  title: therapySession.title,
+  start_time: therapySession.startTime.toJSON(),
+  duration_minutes: therapySession.duration,
+  price_cents: therapySession.price * 100,
+  therapy_id: therapySession.therapyId,
+});
+
 export const extractPatientRefs = therapiesResponse => therapiesResponse.map(therapy => therapy.patients).flat();
+export const extractTherapyRefs = therapySessionResponse => therapySessionResponse.map(therapySession => therapySession.therapy).flat();
+
 export const attachPatientsToTherapies = (therapies, patients) => {
   const thrps = JSON.parse(JSON.stringify(therapies)); // "clone" object
   patients.forEach((patient) => {

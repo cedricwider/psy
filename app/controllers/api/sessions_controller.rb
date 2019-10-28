@@ -10,6 +10,7 @@ class Api::SessionsController < ApiController
   end
 
   def create
+    Rails.logger.debug("Received request: #{session_params.to_json}")
     @session = therapy.sessions.new(session_params)
     return render :show if @session.save
 
@@ -44,6 +45,6 @@ class Api::SessionsController < ApiController
   end
 
   def session_params
-    params.permit(:id, :title, :duration_minutes, :price_cents, :therapy_id)
+    params.permit(:id, :title, :duration_minutes, :price_cents, :therapy_id, :start_time)
   end
 end

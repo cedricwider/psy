@@ -26,12 +26,33 @@ RSpec.describe Session, type: :model do
         expect(subject).not_to be_valid
       end
     end
+  end
 
-    context 'price_cents' do
-      let(:session_params) { attributes_for(:session, therapy_id: therapy.id).merge(price_cents: nil) }
+  describe 'Default values' do
+    let(:session) { Session.create(session_params) }
 
-      it 'Requires the title to be set' do
-        expect(subject).not_to be_valid
+    describe 'price_cents' do
+      context 'When the price is not set on the session' do
+        let(:session_params) { attributes_for(:session, therapy_id: therapy.id).merge(price_cents: nil) }
+
+        it 'is derived from the therapy' do
+          expect(session.price_cents).to eq therapy.price_cents
+        end
+
+        it 'is independent from changes after the session has been created' do
+          session # touch session in order to have it created
+          therapy.update(price_cents: 160_00)
+          expect(session.reload.price_cents).not_to eq therapy.price_cents
+        end
+      end
+
+      context 'When the price is set on the session' do
+        let(:session_params) { attributes_for(:session, therapy_id: therapy.id).merge(price_cents: session_price_cents) }
+        let(:session_price_cents) { 140_00 }
+
+        it 'returns its own price' do
+          expect(session.price_cents).to eq session_price_cents
+        end
       end
     end
   end

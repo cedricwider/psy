@@ -3,16 +3,23 @@ import Router from 'vue-router';
 import Home from '@/../components/Home';
 import Login from '@/../components/Login';
 import Register from '@/../components/Register';
+
 import AddressContainer from '@/../components/addresses/container';
 import AddressIndex from '@/../components/addresses/index';
 import AddressNew from '@/../components/addresses/new';
 import AddressEdit from '@/../components/addresses/edit';
 import AddressShow from '@/../components/addresses/show';
+
 import TherapyContainer from '@/../components/therapies/container';
 import TherapyIndex from '@/../components/therapies/index';
 import TherapyNew from '@/../components/therapies/new';
 import TherapyEdit from '@/../components/therapies/edit';
 import TherapyShow from '@/../components/therapies/show';
+
+import SessionsContainer from '@/../components/sessions/container';
+import SessionIndex from '@/../components/sessions/index';
+import SessionEdit from '@/../components/sessions/edit';
+import SessionShow from '@/../components/sessions/show';
 
 Vue.use(Router);
 
@@ -43,6 +50,15 @@ const router = new Router({
         { path: 'new', name: 'therapynew', component: TherapyNew },
         { path: 'edit/:id', name: 'therapyedit', component: TherapyEdit },
         { path: 'show/:id', name: 'therapyshow', component: TherapyShow },
+      ],
+    },
+    {
+      path: '/sessions',
+      component: SessionsContainer,
+      children: [
+        { path: '/', name: 'sessions', component: SessionIndex },
+        { path: 'edit/:id', name: 'sessionedit', component: SessionEdit },
+        { path: 'show/:id', name: 'sessionshow', component: SessionShow },
       ],
     },
   ],

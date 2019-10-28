@@ -6,6 +6,7 @@ import addresses from './addresses';
 import patients from './patients';
 import sessions from './sessions';
 import therapies from './therapies';
+import therapySessions from './therapy_sessions';
 import users from './users';
 
 function setupTokenHandling(axs) {
@@ -74,5 +75,5 @@ export const store = new Vuex.Store({
   getters,
   mutations,
   actions,
-  modules: [addresses, patients, sessions, therapies, users],
+  modules: [addresses, patients, sessions, therapies, users, therapySessions],
 });

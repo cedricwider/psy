@@ -34,11 +34,25 @@ export const therapies = {
   current: 'therapy/current',
   delete: 'therapy/delete',
   error: 'therapy/error',
+  find: 'therapy/find',
   index: 'therapy/index',
   loading: 'therapy/loading',
   save: 'therapy/save',
   show: 'therapy/show',
   update: 'therapy/update',
+};
+
+export const therapySessions = {
+  create: 'therapySessions/create',
+  current: 'therapySessions/current',
+  delete: 'therapySessions/delete',
+  error: 'therapySessions/error',
+  index: 'therapySessions/index',
+  find: 'therapySessions/find',
+  loading: 'therapySessions/loading',
+  save: 'therapySessions/save',
+  show: 'therapySessions/show',
+  update: 'therapySessions/update',
 };
 
 export const addresses = {

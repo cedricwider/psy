@@ -42,7 +42,7 @@
 
         <router-link
           v-if="isLoggedIn"
-          to="/timesheet"
+          to="/sessions"
           class="navbar-item psy-menu-item"
           :class="{ active: timeSheetActive }"
         >
@@ -122,6 +122,15 @@ export default {
     ...mapGetters({ token: sessions.token }),
     isLoggedIn() {
       return this.token !== null;
+    },
+    timeSheetActive() {
+      return this.$route.path.match(/sessions/);
+    },
+    addressesActive() {
+      return this.$route.path.match(/addresses/);
+    },
+    therapiesActive() {
+      return this.$route.path.match(/therapies/);
     },
   },
 

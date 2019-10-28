@@ -28,7 +28,7 @@ RSpec.describe Api::SessionsController, type: :controller do
 
   describe 'POST #create' do
     let(:session_params) do
-      attributes_for(:session).merge(
+      attributes_for(:session, start_time: '2019-10-26T11:49:06.951Z').merge(
         therapy_id: therapies.first.id
       )
     end
@@ -43,6 +43,16 @@ RSpec.describe Api::SessionsController, type: :controller do
       expect { post :create, params: session_params, format: :json }
         .to change { user.sessions.count }
         .by(1)
+    end
+
+    it 'Creates a session with correct values' do
+      post :create, params: session_params, format: :json
+      session = Session.last
+
+      expect(session.price_cents).to be_present
+      expect(session.start_time.to_s).to eq '2019-10-26 11:49:06 UTC'
+      expect(session.therapy).to be_present
+      expect(session.title).to be_present
     end
 
     context 'With faulty input data' do

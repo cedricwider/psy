@@ -34,6 +34,7 @@
     </section>
 
     <section class="table">
+      <h2>Table</h2>
       <c-table
         :column-names="table.columns"
         :table-data="table.data"
@@ -52,15 +53,42 @@
         </template>
       </c-table>
     </section>
+
+    <section class="collection-list">
+      <h2>List</h2>
+      <c-list
+        v-slot="slotProps"
+        :collection="listCollection"
+      >
+        <c-list-cell>
+          <template v-slot:icon>
+            <b-icon icon="face" />
+          </template>
+          <template>
+            {{ slotProps.item.text }}
+          </template>
+          <template v-slot:description>
+            Doener macht schoener
+          </template>
+        </c-list-cell>
+      </c-list>
+    </section>
   </div>
 </template>
 
 <script>
 import CLoading from './c_loading.vue';
 import CTable from './c_table.vue';
+import CList from './list_view.vue';
+import CListCell from './list_cell.vue';
 
 export default {
-  components: { CLoading, CTable },
+  components: {
+    CLoading,
+    CTable,
+    CList,
+    CListCell,
+  },
   data() {
     return {
       fullScreenLoading: false,
@@ -74,6 +102,7 @@ export default {
           { first: 'Banana', second: 'Apple', last: 'Orange' },
         ],
       },
+      listCollection: [{ text: 'doener' }, { text: 'macht' }, { text: 'schoener' }],
     };
   },
   methods: {
