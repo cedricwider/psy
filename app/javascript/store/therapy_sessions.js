@@ -1,4 +1,4 @@
-import { therapySessions } from './types';
+import { therapySessions, therapies } from './types';
 import { sessionToRequest, responseToSession } from '../helpers/formatters';
 
 const therapySessionState = {
@@ -67,17 +67,25 @@ export const actions = {
       });
   }),
 
-  [therapySessions.index]: ({ commit, rootGetters }) => new Promise((resolve, reject) => {
+  [therapySessions.index]: ({ commit, dispatch, rootGetters }) => new Promise((resolve, reject) => {
     commit(therapySessions.loading, true);
     rootGetters.httpClient
       .get('/api/sessions')
-      .then((response) => {
+      .then(async (response) => {
         const sessions = response.data.map(response => responseToSession(response));
+        const therapyIds = sessions.map(session => session.therapy.id);
+        const referencedTherapies = await Promise.all(
+          therapyIds.map(therapyId => dispatch(therapies.show, therapyId)),
+        );
+        sessions.forEach(
+          session => (session.therapy = referencedTherapies.find(therapy => therapy.id === session.therapy.id)),
+        );
         commit(therapySessions.index, sessions);
         commit(therapySessions.loading, false);
         resolve(sessions);
       })
       .catch((error) => {
+        console.error('Error while loading therapySessions: ', error);
         commit(therapySessions.error, error.response.data);
         commit(therapySessions.loading, false);
         reject(error);

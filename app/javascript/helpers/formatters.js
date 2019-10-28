@@ -54,10 +54,12 @@ export const therapyToRequest = therapy => ({
 
 export const responseToSession = response => ({
   id: response.id,
+  href: response.href,
   title: response.title,
   startTime: moment(response.start_time),
   duration: response.duration_minutes,
   price: response.price_cents / 100.0,
+  therapy: response.therapy,
 });
 
 export const sessionToRequest = therapySession => ({
@@ -70,6 +72,8 @@ export const sessionToRequest = therapySession => ({
 });
 
 export const extractPatientRefs = therapiesResponse => therapiesResponse.map(therapy => therapy.patients).flat();
+export const extractTherapyRefs = therapySessionResponse => therapySessionResponse.map(therapySession => therapySession.therapy).flat();
+
 export const attachPatientsToTherapies = (therapies, patients) => {
   const thrps = JSON.parse(JSON.stringify(therapies)); // "clone" object
   patients.forEach((patient) => {

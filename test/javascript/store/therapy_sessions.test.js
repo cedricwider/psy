@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import moment from 'moment';
 import axios from 'axios';
 import sinon from 'sinon';
 import nock from 'nock';
@@ -82,7 +83,18 @@ describe('TherapySessionStore', () => {
 
   describe('Actions', () => {
     describe('Create Address', () => {
-      const therapySession = { title: 'Test Therapy Session' };
+      const therapySession = {
+        title: 'Test Therapy Session',
+        startTime: moment('2019-10-28T09:33:19.986Z'),
+        price: 180,
+      };
+
+      const serverResponse = {
+        title: 'Test Therapy Session',
+        start_time: moment('2019-10-28T09:33:19.986Z'),
+        price_cents: 18000,
+      };
+
       let httpClient;
       let rootGetters;
 
@@ -90,7 +102,7 @@ describe('TherapySessionStore', () => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
           .post('/api/sessions')
-          .reply(200, therapySession);
+          .reply(200, serverResponse);
         httpClient = axios;
         rootGetters = { httpClient };
       });
@@ -107,9 +119,15 @@ describe('TherapySessionStore', () => {
     });
 
     describe('Load all therapy sessions', () => {
-      const therapySessionsResponse = [{ title: 'Test Therapy Session' }];
-      let httpClient;
-      let rootGetters;
+      const therapySessionsResponse = [
+        {
+          title: 'Test Therapy Session',
+          start_time: moment('2019-10-28T09:33:19.986Z'),
+          therapy: { id: 1, href: 'http://test.host/therpaies/1' },
+        },
+      ];
+      let httpClient = null;
+      let rootGetters = null;
 
       describe('With a successful response', () => {
         beforeEach(() => {
@@ -123,10 +141,15 @@ describe('TherapySessionStore', () => {
 
         it('Loads all therapySessions', async () => {
           const commit = sinon.spy();
+          const dispatch = sinon.stub().returns({ id: 1, href: 'http://test.host/therpaies/1' });
           const loadTherapySessions = actions[therapySessions.index];
           const transformedSessions = therapySessionsResponse.map(response => responseToSession(response));
 
-          await loadTherapySessions({ commit, rootGetters });
+          await loadTherapySessions({ commit, dispatch, rootGetters });
+          console.log(
+            `Expected: ${JSON.stringify(transformedSessions)}\nReceived: ${JSON.stringify(commit.getCall(1).args[1])}`,
+          );
+
           expect(commit.calledWith(therapySessions.loading, true)).toBe(true);
           expect(commit.calledWith(therapySessions.index, transformedSessions)).toBe(true);
           expect(commit.calledWith(therapySessions.loading, false)).toBe(true);
@@ -190,7 +213,10 @@ describe('TherapySessionStore', () => {
     });
 
     describe('Loading a single therapySession by href', () => {
-      const therapySession = { title: 'Test Therapy Session' };
+      const therapySession = {
+        title: 'Test Therapy Session',
+        start_time: moment('2019-10-28T09:33:19.986Z'),
+      };
       let httpClient;
       let rootGetters;
 
