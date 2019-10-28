@@ -56,7 +56,7 @@ export const actions = {
     rootGetters.httpClient
       .post('/api/sessions', therapySessionRequest)
       .then((response) => {
-        commit(therapySessions.create, response.data);
+        commit(therapySessions.create, responseToSession(response.data));
         commit(therapySessions.loading, false);
         resolve(response.data);
       })

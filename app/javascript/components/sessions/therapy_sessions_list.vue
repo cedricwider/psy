@@ -8,9 +8,16 @@
         class="list-cell"
         @click="onTherapySessionSelected(slotProps.item)"
       >
-        <template>{{ slotProps.item.title }}</template>
+        <template>
+          <div class="title-container level">
+            <h5 class="intro level-left title is-5">
+              MyTherapy
+            </h5>
+            <span class="level-right subtitle is-5">{{ slotProps.item.title }}</span>
+          </div>
+        </template>
         <template v-slot:description>
-          {{ sessionDescription(slotProps.item) }}
+          {{ therapySessionDescription(slotProps.item) }}
         </template>
       </c-cell>
     </c-list>
@@ -36,7 +43,8 @@ export default {
     onTherapySessionSelected(therapySession) {
       this.$emit('select', therapySession);
     },
-    sessionDescription(therapySession) {
+    therapySessionDescription(therapySession) {
+      console.log(`Getting description for: ${JSON.stringify(therapySession)}`);
       return `${therapySession.duration} min`;
     },
   },
