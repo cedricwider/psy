@@ -56,11 +56,15 @@ export const actions = {
     rootGetters.httpClient
       .post('/api/sessions', therapySessionRequest)
       .then((response) => {
-        commit(therapySessions.create, responseToSession(response.data));
+        console.log(`Received server response: ${JSON.stringify(response.data)}`);
+        const therapySession = responseToSession(response.data);
+        console.log(`Converted into this object: ${JSON.stringify(therapySession)}`);
+        commit(therapySessions.create, therapySession);
         commit(therapySessions.loading, false);
         resolve(response.data);
       })
       .catch((error) => {
+        console.error('Error while creating session:', error);
         commit(therapySessions.error, error.response.data);
         commit(therapySessions.loading, false);
         reject(error);
@@ -134,7 +138,7 @@ export const actions = {
   [therapySessions.update]: ({ commit, rootGetters }, therapySession) => new Promise((resolve, reject) => {
     commit(therapySessions.loading, true);
     rootGetters.httpClient
-      .put(`/api/sessions/${therapySession.id}`, therapySession)
+      .put(`/api/sessions/${therapySession.id}`, sessionToRequest(therapySession))
       .then((response) => {
         const session = responseToSession(response.data);
         commit(therapySessions.update, session);

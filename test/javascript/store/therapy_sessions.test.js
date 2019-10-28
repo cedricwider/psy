@@ -82,17 +82,23 @@ describe('TherapySessionStore', () => {
   });
 
   describe('Actions', () => {
-    describe('Create Address', () => {
+    describe('Create TherapySession', () => {
       const therapySession = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
         title: 'Test Therapy Session',
         startTime: moment('2019-10-28T09:33:19.986Z'),
         price: 180,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
       };
 
       const serverResponse = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
         title: 'Test Therapy Session',
         start_time: moment('2019-10-28T09:33:19.986Z'),
         price_cents: 18000,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
       };
 
       let httpClient;
@@ -113,7 +119,7 @@ describe('TherapySessionStore', () => {
 
         await createTherapySession({ commit, rootGetters }, therapySession);
         expect(commit.calledWith(therapySessions.loading, true)).toBe(true);
-        expect(commit.calledWith(therapySessions.create, therapySession)).toBe(true);
+        expect(commit.getCall(1).args[1]).toEqual(therapySession);
         expect(commit.calledWith(therapySessions.loading, false)).toBe(true);
       });
     });
@@ -188,7 +194,24 @@ describe('TherapySessionStore', () => {
     });
 
     describe('Loading a single address by id', () => {
-      const therapySession = { title: 'Test Therapy Session' };
+      const therapySession = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
+        title: 'Test Therapy Session',
+        startTime: moment('2019-10-28T09:33:19.986Z'),
+        price: 180,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
+      };
+
+      const serverResponse = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
+        title: 'Test Therapy Session',
+        start_time: '2019-10-28T09:33:19.986Z',
+        price_cents: 18000,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
+      };
+
       let httpClient;
       let rootGetters;
 
@@ -196,7 +219,7 @@ describe('TherapySessionStore', () => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
           .get('/api/sessions/1')
-          .reply(200, therapySession);
+          .reply(200, serverResponse);
         httpClient = axios;
         rootGetters = { httpClient };
       });
@@ -207,7 +230,7 @@ describe('TherapySessionStore', () => {
 
         await getTherapySession({ commit, rootGetters }, 1);
         expect(commit.calledWith(therapySessions.loading, true)).toBe(true);
-        expect(commit.calledWith(therapySessions.update, responseToSession(therapySession))).toBe(true);
+        expect(commit.getCall(1).args[1]).toEqual(therapySession);
         expect(commit.calledWith(therapySessions.loading, false)).toBe(true);
       });
     });
@@ -241,15 +264,38 @@ describe('TherapySessionStore', () => {
     });
 
     describe('Update a therapySession', () => {
-      const therapySession = { title: 'Test Therapy Session', id: 1 };
+      const therapySession = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
+        title: 'Test Therapy Session',
+        startTime: moment('2019-10-28T09:33:19.986Z'),
+        price: 180,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
+      };
+
+      const clientRequest = {
+        id: 1,
+        title: 'Test Therapy Session',
+        start_time: '2019-10-28T09:33:19.986Z',
+        price_cents: 18000,
+      };
+
+      const serverResponse = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
+        title: 'Test Therapy Session',
+        start_time: moment('2019-10-28T09:33:19.986Z'),
+        price_cents: 18000,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
+      };
       let httpClient;
       let rootGetters;
 
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
-          .put('/api/sessions/1', therapySession)
-          .reply(200, therapySession);
+          .put('/api/sessions/1', clientRequest)
+          .reply(200, serverResponse);
         httpClient = axios;
         rootGetters = { httpClient };
       });
@@ -260,13 +306,29 @@ describe('TherapySessionStore', () => {
 
         await updateTherapySession({ commit, rootGetters }, therapySession);
         expect(commit.calledWith(therapySessions.loading, true)).toBe(true);
-        expect(commit.calledWith(therapySessions.update, responseToSession(therapySession))).toBe(true);
+        expect(commit.getCall(1).args[1]).toEqual(therapySession);
         expect(commit.calledWith(therapySessions.loading, false)).toBe(true);
       });
     });
 
     describe('Delete a therapySession', () => {
-      const therapySession = { title: 'Test Therapy Session', id: 1 };
+      const therapySession = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
+        title: 'Test Therapy Session',
+        startTime: moment('2019-10-28T09:33:19.986Z'),
+        price: 180,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
+      };
+
+      const serverResponse = {
+        id: 1,
+        href: 'http://test.host/api/sessions/1',
+        title: 'Test Therapy Session',
+        start_time: moment('2019-10-28T09:33:19.986Z'),
+        price_cents: 18000,
+        therapy: { id: 1, href: 'http://test.host/api/therapies/1' },
+      };
       let httpClient;
       let rootGetters;
 
@@ -274,7 +336,7 @@ describe('TherapySessionStore', () => {
         axios.defaults.baseURL = 'http://localhost/';
         nock('http://localhost/')
           .delete('/api/sessions/1')
-          .reply(200, therapySession);
+          .reply(200, serverResponse);
         httpClient = axios;
         rootGetters = { httpClient };
       });
@@ -285,7 +347,7 @@ describe('TherapySessionStore', () => {
 
         await deleteTherapySession({ commit, rootGetters }, therapySession);
         expect(commit.calledWith(therapySessions.loading, true)).toBe(true);
-        expect(commit.calledWith(therapySessions.delete, responseToSession(therapySession))).toBe(true);
+        expect(commit.getCall(1).args[1]).toEqual(therapySession);
         expect(commit.calledWith(therapySessions.loading, false)).toBe(true);
       });
     });

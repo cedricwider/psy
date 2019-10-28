@@ -44,7 +44,6 @@ export default {
       this.$emit('select', therapySession);
     },
     therapySessionDescription(therapySession) {
-      console.log(`Getting description for: ${JSON.stringify(therapySession)}`);
       return `${therapySession.duration} min`;
     },
   },
