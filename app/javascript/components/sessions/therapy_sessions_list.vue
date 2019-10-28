@@ -11,7 +11,7 @@
         <template>
           <div class="title-container level">
             <h5 class="intro level-left title is-5">
-              MyTherapy
+              {{ slotProps.item.therapy.title }}
             </h5>
             <span class="level-right subtitle is-5">{{ slotProps.item.title }}</span>
           </div>
