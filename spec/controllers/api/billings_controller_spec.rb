@@ -9,14 +9,6 @@ describe Api::BillingsController do
     @request.env['HTTP_AUTHORIZATION'] = "Token token=#{token}"
   end
 
-  describe '#index' do
-    it 'responds with success' do
-      get :index, params: {}, format: :json
-
-      expect(response).to be_successful
-    end
-  end
-
   describe '#show' do
     let(:billing) { create(:billing) }
 
