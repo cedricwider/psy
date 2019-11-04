@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :addresses, only: [:show, :create, :update, :destroy]
     resources :therapies, only: [:index, :show, :create, :update, :destroy]
     resources :sessions, only: [:index, :show, :create, :update, :destroy]
+    resources :billings, only: [:index, :show, :create, :update, :destroy]
   end
 
   get '*unmatched_route', to: 'home#index'
