@@ -9,6 +9,14 @@ describe Api::BillingsController do
     @request.env['HTTP_AUTHORIZATION'] = "Token token=#{token}"
   end
 
+  describe '#index' do
+    it 'responds with success' do
+      get :index, params: {}, format: :json
+
+      expect(response).to be_successful
+    end
+  end
+
   describe '#show' do
     let(:billing) { create(:billing) }
 
@@ -87,6 +95,17 @@ describe Api::BillingsController do
         expect(billings.size).to eq 1
         expect(billings.first['id']).to eq my_billing.id
       end
+    end
+  end
+
+  describe '#update' do
+    let(:billing) { create(:billing) }
+    let(:billing_values) { attributes_for(:billing) }
+
+    it 'updates the billing' do
+      put :update, params: { id: billing.id }, format: :json, body: billing_values.to_json
+
+      expect(billing.reload.title).to eq billing_values[:title]
     end
   end
 end

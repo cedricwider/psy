@@ -21,6 +21,12 @@ module Api
       redirect_to api_billing_path(@billing.id)
     end
 
+    def update
+      @billing = Billing.find(params[:id])
+      @billing.update(JSON.parse(request.body.read))
+      render :show
+    end
+
     private
 
     def query_params
