@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :sessions, only: [:index, :show, :create, :update, :destroy] do
       resources :billings, only: [:index, :create]
     end
-    resources :billings, only: [:index, :show, :update, :destroy]
+    resources :billings, only: [:show, :update, :destroy]
 
     get 'billings/q', to: 'billings#query'
   end

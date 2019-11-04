@@ -9,14 +9,6 @@ describe Api::BillingsController do
     @request.env['HTTP_AUTHORIZATION'] = "Token token=#{token}"
   end
 
-  describe '#index' do
-    it 'responds with success' do
-      get :index, params: {}, format: :json
-
-      expect(response).to be_successful
-    end
-  end
-
   describe '#show' do
     let(:billing) { create(:billing) }
 
@@ -53,6 +45,47 @@ describe Api::BillingsController do
 
         result = JSON.parse(response.body)
         expect(result.size).to eq 1
+      end
+    end
+  end
+
+  describe 'nested routes (index and create)' do
+    describe '#create' do
+      let(:session) { create(:session) }
+      let(:billing_attributes) { attributes_for(:billing) }
+
+      it 'redirects on success' do
+        post :create, format: :json, params: { session_id: session.id }, body: billing_attributes.to_json
+
+        expect(response.status).to eq 302
+      end
+
+      it 'creates a new billing' do
+        expect do
+          post :create, format: :json, params: { session_id: session.id }, body: billing_attributes.to_json
+        end.to(change { Billing.count }.by(1))
+      end
+    end
+
+    describe '#index' do
+      render_views
+      let(:my_billing) { build(:billing) }
+      let(:other_billing) { build(:billing) }
+      let(:my_session) { create(:session, billings: [my_billing]) }
+      let!(:other_session) { create(:session, billings: [other_billing]) }
+
+      it 'responds with success' do
+        get :index, params: { session_id: my_session.id }, format: :json
+
+        expect(response).to be_successful
+      end
+
+      it 'returns only billings from my session' do
+        get :index, params: { session_id: my_session.id }, format: :json
+
+        billings = JSON.parse(response.body)
+        expect(billings.size).to eq 1
+        expect(billings.first['id']).to eq my_billing.id
       end
     end
   end
