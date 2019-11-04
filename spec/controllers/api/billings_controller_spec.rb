@@ -36,4 +36,24 @@ describe Api::BillingsController do
       end
     end
   end
+
+  describe '#query' do
+    describe 'find_by_status' do
+      render_views
+
+      let(:billing) { create(:billing) }
+
+      before(:each) do
+        create_list(:invoice, 5, billing: billing, status: %w[payed open reminded overdue].sample)
+        create(:invoice, status: 'reminder_overdue', billing: billing)
+      end
+
+      it 'finds open billings' do
+        get :query, params: { state: 'reminder_overdue' }, format: :json
+
+        result = JSON.parse(response.body)
+        expect(result.size).to eq 1
+      end
+    end
+  end
 end

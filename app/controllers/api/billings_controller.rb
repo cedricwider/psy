@@ -9,5 +9,16 @@ module Api
     rescue ActiveRecord::RecordNotFound
       render json: {}, status: :not_found
     end
+
+    def query
+      @billings = Billing.find_by_status(query_params[:state])
+      render :index
+    end
+
+    private
+
+    def query_params
+      params.permit(:state)
+    end
   end
 end
