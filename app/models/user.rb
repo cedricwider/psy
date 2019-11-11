@@ -11,4 +11,8 @@ class User < ApplicationRecord
   has_many :patients, dependent: :destroy
   has_many :therapies, dependent: :destroy
   has_many :sessions, through: :therapies
+
+  before_create do
+    self.tenant ||= SecureRandom.uuid
+  end
 end
