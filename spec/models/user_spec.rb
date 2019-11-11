@@ -33,13 +33,20 @@ describe User, type: :model do
   end
 
   describe 'Save hooks' do
-    it 'downcases email' do
-      upcase_email = FFaker::Internet.email.upcase
-      user = build(:user, email: upcase_email)
-
+    before(:each) do
       user.save
+    end
 
-      expect(user.email).to eq upcase_email.downcase
+    context 'with upcase email' do
+      let(:user) { build(:user, email: FFaker::Internet.email.upcase) }
+
+      it 'downcases email' do
+        expect(user.email).not_to match(/[A-Z]/)
+      end
+
+      it 'autogenerates tenant id' do
+        expect(user.tenant).not_to be_blank
+      end
     end
   end
 
