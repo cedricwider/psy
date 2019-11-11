@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_26_121145) do
+ActiveRecord::Schema.define(version: 2019_11_11_090938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,25 @@ ActiveRecord::Schema.define(version: 2019_10_26_121145) do
     t.datetime "updated_at", null: false
     t.bigint "patient_id"
     t.index ["patient_id"], name: "index_addresses_on_patient_id"
+  end
+
+  create_table "billings", force: :cascade do |t|
+    t.string "title"
+    t.bigint "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_billings_on_session_id"
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.string "title"
+    t.datetime "bill_date"
+    t.datetime "pay_date"
+    t.string "status"
+    t.bigint "billing_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["billing_id"], name: "index_invoices_on_billing_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -76,9 +95,12 @@ ActiveRecord::Schema.define(version: 2019_10_26_121145) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tenant"
   end
 
   add_foreign_key "addresses", "patients"
+  add_foreign_key "billings", "sessions"
+  add_foreign_key "invoices", "billings"
   add_foreign_key "patients", "users"
   add_foreign_key "sessions", "therapies"
   add_foreign_key "therapies", "users"
