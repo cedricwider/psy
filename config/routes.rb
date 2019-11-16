@@ -10,9 +10,10 @@ Rails.application.routes.draw do
     resources :addresses, only: [:show, :create, :update, :destroy]
     resources :therapies, only: [:index, :show, :create, :update, :destroy]
     resources :sessions, only: [:index, :show, :create, :update, :destroy] do
-      resources :billings, only: [:index, :create]
+      get '/billings' => 'billings#session_index'
+      post '/billings/create' => 'billings#create'
     end
-    resources :billings, only: [:show, :update, :destroy]
+    resources :billings, only: [:index, :show, :update, :destroy]
 
     get 'billings/q', to: 'billings#query'
   end

@@ -29,6 +29,14 @@ describe Api::BillingsController do
     end
   end
 
+  describe '#index' do
+    it 'responds with success' do
+      get :index, format: :json
+
+      expect(response).to be_successful
+    end
+  end
+
   describe '#query' do
     describe 'find_by_status' do
       render_views
@@ -75,13 +83,13 @@ describe Api::BillingsController do
       let!(:other_session) { create(:session, billings: [other_billing]) }
 
       it 'responds with success' do
-        get :index, params: { session_id: my_session.id }, format: :json
+        get :session_index, params: { session_id: my_session.id }, format: :json
 
         expect(response).to be_successful
       end
 
       it 'returns only billings from my session' do
-        get :index, params: { session_id: my_session.id }, format: :json
+        get :session_index, params: { session_id: my_session.id }, format: :json
 
         billings = JSON.parse(response.body)
         expect(billings.size).to eq 1

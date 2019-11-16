@@ -1,7 +1,12 @@
 module Api
   class BillingsController < ApiController
     def index
-      @billings = current_session.billings.includes(:invoices).all
+      @billings = Billing.all
+    end
+
+    def session_index
+      @billings = current_session.billings
+      render :index
     end
 
     def show
