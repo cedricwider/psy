@@ -1,17 +1,10 @@
 <template>
   <section class="patient-form">
     <form-layout>
-      <error
-        slot="error"
-        :message="errorMessage"
-        :error="error"
-      />
+      <error slot="error" :message="errorMessage" :error="error" />
 
       <!-- Salutation and Name -->
-      <b-field
-        grouped
-        group-multiline
-      >
+      <b-field grouped group-multiline>
         <b-field label="Anrede">
           <b-select placeholder="Bitte auswählen">
             <option
@@ -23,30 +16,17 @@
             </option>
           </b-select>
         </b-field>
-        <b-field
-          label="Vorname"
-          expanded
-        >
-          <b-input
-            v-model="patient.firstName"
-            type="text"
-            placeholder="Hans"
-          />
+        <b-field label="Vorname" expanded>
+          <b-input v-model="patient.firstName" type="text" placeholder="Hans" />
         </b-field>
-        <b-field
-          label="Nachname"
-          expanded
-        >
+        <b-field label="Nachname" expanded>
           <b-input
             v-model="patient.lastName"
             type="text"
             placeholder="Muster"
           />
         </b-field>
-        <b-field
-          label="Telefon"
-          expanded
-        >
+        <b-field label="Telefon" expanded>
           <b-input
             v-model="patient.phone"
             type="text"
@@ -56,14 +36,8 @@
       </b-field>
 
       <!-- Street and house number -->
-      <b-field
-        grouped
-        group-multiline
-      >
-        <b-field
-          label="Strasse"
-          expanded
-        >
+      <b-field grouped group-multiline>
+        <b-field label="Strasse" expanded>
           <b-input
             v-model="patient.address.street"
             type="text"
@@ -80,10 +54,7 @@
       </b-field>
 
       <!-- PLZ / Town -->
-      <b-field
-        grouped
-        group-multiline
-      >
+      <b-field grouped group-multiline>
         <b-field label="PLZ">
           <b-input
             v-model="patient.address.zip"
@@ -91,10 +62,7 @@
             placeholder="8108"
           />
         </b-field>
-        <b-field
-          label="Ort"
-          expanded
-        >
+        <b-field label="Ort" expanded>
           <b-input
             v-model="patient.address.town"
             type="text"

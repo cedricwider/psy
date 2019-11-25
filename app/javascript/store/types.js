@@ -67,3 +67,16 @@ export const addresses = {
   save: 'address/save',
   update: 'address/update',
 };
+
+export const billings = {
+  create: 'billing/create',
+  current: 'billing/current',
+  delete: 'billing/delete',
+  error: 'billing/error',
+  index: 'billing/index',
+  load: 'billing/load',
+  loading: 'billing/loading',
+  show: 'billing/show',
+  save: 'billing/save',
+  update: 'billing/update',
+};
