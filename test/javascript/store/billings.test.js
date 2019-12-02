@@ -1,5 +1,8 @@
 import 'babel-polyfill';
-import { mutations } from 'store/billings';
+import axios from 'axios';
+import sinon from 'sinon';
+import nock from 'nock';
+import { actions, mutations } from 'store/billings';
 import { billings } from 'store/types';
 
 describe('BillingsStore', () => {
@@ -100,5 +103,36 @@ describe('BillingsStore', () => {
     });
   });
 
-  describe('Actions', () => {});
+  describe('Actions', () => {
+    describe('Load a billing by id', () => {
+      const billingId = 1;
+      const billing = {
+        id: billingId,
+        title: 'title',
+        session: { href: 'http://example.com' },
+      };
+      let httpClient;
+      let rootGetters;
+
+      beforeEach(() => {
+        axios.defaults.baseURL = 'http://localhost/';
+        nock('http://localhost')
+          .get(`/api/billings/${billingId}`)
+          .reply(200, billing);
+        httpClient = axios;
+        rootGetters = { httpClient };
+      });
+
+      it('loads a single billing', async () => {
+        const commit = sinon.spy();
+        const loadBilling = actions[billings.load];
+
+        const loadedBilling = await loadBilling(
+          { commit, rootGetters },
+          billingId,
+        );
+        expect(loadedBilling).toEqual(billing);
+      });
+    });
+  });
 });
