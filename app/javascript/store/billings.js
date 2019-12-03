@@ -47,22 +47,40 @@ export const mutations = {
 };
 
 export const actions = {
-  [billings.load]: ({ commit, rootGetters }, id) => new Promise((resolve, reject) => {
-    commit(billings.loading, true);
-    rootGetters.httpClient
-      .get(`/api/billings/${id}`)
-      .then(response => response.data)
-      .then((response) => {
-        commit(billings.update, response);
-        commit(billings.loading, false);
-        resolve(response);
-      })
-      .catch((error) => {
-        commit(billings.error, error);
-        commit(billings.loading, false);
-        reject(error);
-      });
-  }),
+  [billings.index]: ({ commit, rootGetters }) =>
+    new Promise((resolve, reject) => {
+      commit(billings.loading, true);
+      rootGetters.httpClient
+        .get('/api/billings')
+        .then(response => response.data)
+        .then(response => {
+          commit(billings.index, response);
+          commit(billings.loading, false);
+          resolve(response);
+        })
+        .catch(error => {
+          commit(billings.loading, false);
+          commit(billings.error, error);
+          reject(error);
+        });
+    }),
+  [billings.load]: ({ commit, rootGetters }, id) =>
+    new Promise((resolve, reject) => {
+      commit(billings.loading, true);
+      rootGetters.httpClient
+        .get(`/api/billings/${id}`)
+        .then(response => response.data)
+        .then(response => {
+          commit(billings.update, response);
+          commit(billings.loading, false);
+          resolve(response);
+        })
+        .catch(error => {
+          commit(billings.error, error);
+          commit(billings.loading, false);
+          reject(error);
+        });
+    }),
 };
 
 export default {

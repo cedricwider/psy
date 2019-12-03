@@ -104,13 +104,14 @@ describe('BillingsStore', () => {
   });
 
   describe('Actions', () => {
+    const billingId = 1;
+    const billing = {
+      id: billingId,
+      title: 'title',
+      session: { href: 'http://example.com' },
+    };
+
     describe('Load a billing by id', () => {
-      const billingId = 1;
-      const billing = {
-        id: billingId,
-        title: 'title',
-        session: { href: 'http://example.com' },
-      };
       let httpClient;
       let rootGetters;
 
@@ -132,6 +133,29 @@ describe('BillingsStore', () => {
           billingId,
         );
         expect(loadedBilling).toEqual(billing);
+      });
+    });
+
+    describe('Loading all billings', () => {
+      let httpClient;
+      let rootGetters;
+      const allBillings = [billing];
+
+      beforeEach(() => {
+        axios.defaults.baseURL = 'http://localhost';
+        nock('http://localhost')
+          .get('/api/billings')
+          .reply(200, allBillings);
+        httpClient = axios;
+        rootGetters = { httpClient };
+      });
+
+      it('loads all billings', async () => {
+        const commit = sinon.spy();
+        const loadBillings = actions[billings.index];
+
+        const loadedBillings = await loadBillings({ commit, rootGetters });
+        expect(loadedBillings).toEqual(allBillings);
       });
     });
   });
