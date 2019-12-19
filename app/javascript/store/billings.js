@@ -97,6 +97,22 @@ export const actions = {
         reject(error);
       });
   }),
+  [billings.update]: ({ commit, rootGetters }, billing) => new Promise((resolve, reject) => {
+    commit(billings.loading, true);
+    rootGetters.httpClient
+      .put(`/api/billings/${billing.id}`, billing)
+      .then(response => response.data)
+      .then((response) => {
+        commit(billings.loading, false);
+        commit(billings.create, response);
+        resolve(response);
+      })
+      .catch((error) => {
+        commit(billings.error, error);
+        commit(billings.loading, false);
+        reject(error);
+      });
+  }),
 };
 
 export default {

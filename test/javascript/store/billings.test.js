@@ -207,5 +207,35 @@ describe('BillingsStore', () => {
         expect(commit.calledWith(billings.loading, false)).toBe(true);
       });
     });
+
+    describe('Update a billing', () => {
+      let httpClient;
+      let rootGetters;
+      const updateBilling = actions[billings.update];
+      const billingRequest = { id: 1, title: 'updated!' };
+      const billingResponse = { id: 1, ...billingRequest };
+      const commit = sinon.spy();
+
+      beforeEach(() => {
+        axios.defaults.baseURL = 'http://localhost';
+        nock('http://localhost')
+          .put(`/api/billings/${billingRequest.id}`, billingRequest)
+          .reply(200, billingResponse);
+        httpClient = axios;
+        rootGetters = { httpClient };
+      });
+
+      it('makes the correct request', async () => {
+        const serverResponse = await updateBilling(
+          { commit, rootGetters },
+          billingRequest,
+        );
+
+        expect(serverResponse).toEqual(billingResponse);
+        expect(commit.calledWith(billings.loading, true)).toBe(true);
+        expect(commit.calledWith(billings.create, billingResponse)).toBe(true);
+        expect(commit.calledWith(billings.loading, false)).toBe(true);
+      });
+    });
   });
 });
