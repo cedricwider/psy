@@ -152,12 +152,13 @@ describe('BillingsStore', () => {
     describe('Loading all billings', () => {
       let httpClient;
       let rootGetters;
+      const sessionId = 1;
       const allBillings = [billing];
 
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost';
         nock('http://localhost')
-          .get('/api/billings')
+          .get(`/api/sessions/${sessionId}/billings`)
           .reply(200, allBillings);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -167,7 +168,10 @@ describe('BillingsStore', () => {
         const commit = sinon.spy();
         const loadBillings = actions[billings.index];
 
-        const loadedBillings = await loadBillings({ commit, rootGetters });
+        const loadedBillings = await loadBillings(
+          { commit, rootGetters },
+          billingId,
+        );
         expect(loadedBillings).toEqual(allBillings);
       });
     });
@@ -175,6 +179,7 @@ describe('BillingsStore', () => {
     describe('Creating a billing', () => {
       let httpClient;
       let rootGetters;
+      const sessionId = 1;
       const createBilling = actions[billings.create];
       const billingRequest = { title: 'testing!' };
       const billingResponse = { id: 1, ...billingRequest };
@@ -183,7 +188,7 @@ describe('BillingsStore', () => {
       beforeEach(() => {
         axios.defaults.baseURL = 'http://localhost';
         nock('http://localhost')
-          .post('/api/billings', billingRequest)
+          .post(`/api/sessions/${sessionId}/billings`, billingRequest)
           .reply(200, billingResponse);
         httpClient = axios;
         rootGetters = { httpClient };
@@ -192,6 +197,7 @@ describe('BillingsStore', () => {
       it('makes the correct request', async () => {
         const serverResponse = await createBilling(
           { commit, rootGetters },
+          sessionId,
           billingRequest,
         );
 

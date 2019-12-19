@@ -49,10 +49,10 @@ export const mutations = {
 };
 
 export const actions = {
-  [billings.index]: ({ commit, rootGetters }) => new Promise((resolve, reject) => {
+  [billings.index]: ({ commit, rootGetters }, sessionId) => new Promise((resolve, reject) => {
     commit(billings.loading, true);
     rootGetters.httpClient
-      .get('/api/billings')
+      .get(`/api/sessions/${sessionId}/billings`)
       .then(response => response.data)
       .then((response) => {
         commit(billings.index, response);
@@ -81,10 +81,10 @@ export const actions = {
         reject(error);
       });
   }),
-  [billings.create]: ({ commit, rootGetters }, billing) => new Promise((resolve, reject) => {
+  [billings.create]: ({ commit, rootGetters }, sessionId, billing) => new Promise((resolve, reject) => {
     commit(billings.loading, true);
     rootGetters.httpClient
-      .post('/api/billings', billing)
+      .post(`/api/sessions/${sessionId}/billings`, billing)
       .then(response => response.data)
       .then((response) => {
         commit(billings.loading, false);
