@@ -2,10 +2,23 @@ import 'babel-polyfill';
 import axios from 'axios';
 import sinon from 'sinon';
 import nock from 'nock';
-import { actions, mutations } from 'store/billings';
+import { actions, mutations, getters } from 'store/billings';
 import { billings } from 'store/types';
 
 describe('BillingsStore', () => {
+  describe('Getters', () => {
+    describe('find a billing by id (show)', () => {
+      const billing = { id: 1, title: 'billing 1' };
+      const storedBillings = [billing, { id: 2, title: 'billing 2' }];
+      const store = { index: storedBillings };
+      const findById = getters[billings.show](store);
+
+      it('finds the billing', () => {
+        expect(findById(1)).toEqual(billing);
+      });
+    });
+  });
+
   describe('Mutations', () => {
     const billing = {
       title: 'title',
@@ -156,6 +169,36 @@ describe('BillingsStore', () => {
 
         const loadedBillings = await loadBillings({ commit, rootGetters });
         expect(loadedBillings).toEqual(allBillings);
+      });
+    });
+
+    describe('Creating a billing', () => {
+      let httpClient;
+      let rootGetters;
+      const createBilling = actions[billings.create];
+      const billingRequest = { title: 'testing!' };
+      const billingResponse = { id: 1, ...billingRequest };
+      const commit = sinon.spy();
+
+      beforeEach(() => {
+        axios.defaults.baseURL = 'http://localhost';
+        nock('http://localhost')
+          .post('/api/billings', billingRequest)
+          .reply(200, billingResponse);
+        httpClient = axios;
+        rootGetters = { httpClient };
+      });
+
+      it('makes the correct request', async () => {
+        const serverResponse = await createBilling(
+          { commit, rootGetters },
+          billingRequest,
+        );
+
+        expect(serverResponse).toEqual(billingResponse);
+        expect(commit.calledWith(billings.loading, true)).toBe(true);
+        expect(commit.calledWith(billings.create, billingResponse)).toBe(true);
+        expect(commit.calledWith(billings.loading, false)).toBe(true);
       });
     });
   });

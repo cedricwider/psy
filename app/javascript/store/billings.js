@@ -7,11 +7,13 @@ const billingState = {
   loading: false,
 };
 
-const getters = {
+export const getters = {
   [billings.current]: state => state.current,
   [billings.error]: state => state.error,
   [billings.index]: state => state.index,
   [billings.loading]: state => state.loading,
+  // According to https://github.com/vuejs/vuex/issues/688
+  [billings.show]: state => billingId => state.index.find(billing => billing.id === billingId),
 };
 
 export const mutations = {
@@ -47,40 +49,54 @@ export const mutations = {
 };
 
 export const actions = {
-  [billings.index]: ({ commit, rootGetters }) =>
-    new Promise((resolve, reject) => {
-      commit(billings.loading, true);
-      rootGetters.httpClient
-        .get('/api/billings')
-        .then(response => response.data)
-        .then(response => {
-          commit(billings.index, response);
-          commit(billings.loading, false);
-          resolve(response);
-        })
-        .catch(error => {
-          commit(billings.loading, false);
-          commit(billings.error, error);
-          reject(error);
-        });
-    }),
-  [billings.load]: ({ commit, rootGetters }, id) =>
-    new Promise((resolve, reject) => {
-      commit(billings.loading, true);
-      rootGetters.httpClient
-        .get(`/api/billings/${id}`)
-        .then(response => response.data)
-        .then(response => {
-          commit(billings.update, response);
-          commit(billings.loading, false);
-          resolve(response);
-        })
-        .catch(error => {
-          commit(billings.error, error);
-          commit(billings.loading, false);
-          reject(error);
-        });
-    }),
+  [billings.index]: ({ commit, rootGetters }) => new Promise((resolve, reject) => {
+    commit(billings.loading, true);
+    rootGetters.httpClient
+      .get('/api/billings')
+      .then(response => response.data)
+      .then((response) => {
+        commit(billings.index, response);
+        commit(billings.loading, false);
+        resolve(response);
+      })
+      .catch((error) => {
+        commit(billings.loading, false);
+        commit(billings.error, error);
+        reject(error);
+      });
+  }),
+  [billings.load]: ({ commit, rootGetters }, id) => new Promise((resolve, reject) => {
+    commit(billings.loading, true);
+    rootGetters.httpClient
+      .get(`/api/billings/${id}`)
+      .then(response => response.data)
+      .then((response) => {
+        commit(billings.update, response);
+        commit(billings.loading, false);
+        resolve(response);
+      })
+      .catch((error) => {
+        commit(billings.error, error);
+        commit(billings.loading, false);
+        reject(error);
+      });
+  }),
+  [billings.create]: ({ commit, rootGetters }, billing) => new Promise((resolve, reject) => {
+    commit(billings.loading, true);
+    rootGetters.httpClient
+      .post('/api/billings', billing)
+      .then(response => response.data)
+      .then((response) => {
+        commit(billings.loading, false);
+        commit(billings.create, response);
+        resolve(response);
+      })
+      .catch((error) => {
+        commit(billings.error, error);
+        commit(billings.loading, false);
+        reject(error);
+      });
+  }),
 };
 
 export default {
