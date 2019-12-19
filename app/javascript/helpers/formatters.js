@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import 'array-flat-polyfill';
 import moment from 'moment';
 
 export const responseToPatient = (response) => {
@@ -79,7 +80,9 @@ export const attachPatientsToTherapies = (therapies, patients) => {
   patients.forEach((patient) => {
     const patientTherapies = thrps.filter(t => t.patients.map(p => p.id).includes(patient.id));
     patientTherapies.forEach((therapy) => {
-      const patientIndex = therapy.patients.findIndex(p => p.id === patient.id && p !== patient);
+      const patientIndex = therapy.patients.findIndex(
+        p => p.id === patient.id && p !== patient,
+      );
       therapy.patients[patientIndex] = patient;
     });
   });
