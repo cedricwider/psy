@@ -104,11 +104,26 @@ export const actions = {
       .then(response => response.data)
       .then((response) => {
         commit(billings.loading, false);
-        commit(billings.create, response);
+        commit(billings.update, response);
         resolve(response);
       })
       .catch((error) => {
         commit(billings.error, error);
+        commit(billings.loading, false);
+        reject(error);
+      });
+  }),
+  [billings.delete]: ({ commit, rootGetters }, billing) => new Promise((resolve, reject) => {
+    commit(billings.loading, true);
+    rootGetters.httpClient
+      .delete(`/api/billings/${billing.id}`)
+      .then(response => response.data)
+      .then((response) => {
+        commit(billings.delete, billing);
+        commit(billings.loading, false);
+        resolve(response);
+      })
+      .catch((error) => {
         commit(billings.loading, false);
         reject(error);
       });

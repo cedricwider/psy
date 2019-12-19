@@ -121,7 +121,7 @@ describe('BillingsStore', () => {
     const billing = {
       id: billingId,
       title: 'title',
-      session: { href: 'http://example.com' },
+      session: { id: 1, href: 'http://example.com' },
     };
 
     describe('Load a billing by id', () => {
@@ -233,7 +233,31 @@ describe('BillingsStore', () => {
 
         expect(serverResponse).toEqual(billingResponse);
         expect(commit.calledWith(billings.loading, true)).toBe(true);
-        expect(commit.calledWith(billings.create, billingResponse)).toBe(true);
+        expect(commit.calledWith(billings.update, billingResponse)).toBe(true);
+        expect(commit.calledWith(billings.loading, false)).toBe(true);
+      });
+    });
+
+    describe('Delete a billing', () => {
+      let httpClient;
+      let rootGetters;
+      const deleteBilling = actions[billings.delete];
+      const commit = sinon.spy();
+
+      beforeEach(() => {
+        axios.defaults.baseURL = 'http://localhost';
+        nock('http://localhost')
+          .delete(`/api/billings/${billingId}`)
+          .reply(200);
+        httpClient = axios;
+        rootGetters = { httpClient };
+      });
+
+      it('makes the correct request', async () => {
+        await deleteBilling({ commit, rootGetters }, billing);
+
+        expect(commit.calledWith(billings.loading, true)).toBe(true);
+        expect(commit.calledWith(billings.delete, billing)).toBe(true);
         expect(commit.calledWith(billings.loading, false)).toBe(true);
       });
     });
