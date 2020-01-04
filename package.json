@@ -33,7 +33,7 @@
     "sinon": "^7.2.5",
     "vue-jest": "^2.6.0",
     "vue-server-renderer": "^2.5.17",
-    "webpack-dev-server": "^2.11.2"
+    "webpack-dev-server": "^3.1.11"
   },
   "jest": {
     "verbose": true,
