@@ -7,7 +7,7 @@
     "babel-polyfill": "^6.26.0",
     "buefy": "^0.7.3",
     "bulma": "^0.7.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "vee-validate": "^2.1.7",
     "vue": "^2.5.17",
     "vue-loader": "14.2.2",
